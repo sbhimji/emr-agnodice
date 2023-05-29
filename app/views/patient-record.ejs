@@ -1,0 +1,44 @@
+<head>
+    <title> <%= title %></title>
+    <link rel = "stylesheet" type = "text/css" href = "patient-record.css" />
+</head>
+<body>
+    <h2 class = "link"><a href = "/home">Home</a></h2> 
+    <h1>Patient Record: <%= patient.fName %> <%= patient.lName %></h1>
+    
+    <label for "div1" class = "infoLabel">General Patient Info</label>
+    <div class ="genInfo" id = "div1">
+        <div>
+            <span>Birthday: <%= patient.birth_month %> <%= patient.birth_day %>, <%= patient.birth_year %></span>
+            <span>Sex: <%= patient.sex %></span>
+            <span>Age: <%= patient.age %></span>
+        </div>
+        <div>
+            <span class = "leftText">Insurance: <%= patient.insurance %></span>
+            <span class = "leftText">PCP: <%= patient.pcp %></span>
+        </div>
+    </div>
+
+    <label for "div2" class = "infoLabel">Visits</label>
+    <div>
+        <table class = "center" id = "queryTable" name = "openingtable" style = "width:77%">
+            <tr>
+              <th>Visit Date</th>
+              <th>Event</th>
+              <th>Attending Physician</th>
+            </tr>
+            <% patient.visits.forEach(function(visit) { %> 
+                <tr>
+                  <td><a href="/visit-record?visit_id=<%= visit.visit_id %>"><%= visit.date %></a></td>
+                  <td><%= visit.event%></td>
+                  <td><%= visit.physician%></td>
+                  </tr>
+              <% }) %> 
+        
+    </div>
+    <div>
+        <a href = "/newVisit" class = "infoLabel">Add Visit</a>
+    </div>
+    
+</body>
+

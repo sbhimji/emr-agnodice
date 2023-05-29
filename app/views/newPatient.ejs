@@ -1,0 +1,89 @@
+<h2 class = "link"><a href = "/home">Home</a></h2> 
+<h1>Add Patient</h1> 
+<form action ="/patient" method = 'POST'>
+    <div>
+        <label for = "fname">First Name</label>
+        <input type="text" id = "fname" name = "fname" required>
+    </div>
+    <div>
+        <label for = "lname">Last Name</label>
+        <input type="text" id = "lname" name = "lname" required>
+    </div>
+    <div>
+        <label for = "sex">Sex</label>
+        <select id = "sex" name = "sex"  type = "text" required>
+            <option selected disabled hidden>Select Sex</option>
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+    </div>
+    <div>
+        <label for = "birth_month">Birth Month</label>
+          <select id = "birth_month" name = "birth_month"  type = "text" required>
+            <option selected disabled hidden>Select Month</option>
+            <option>January</option>
+            <option>February</option>
+            <option>March</option>
+            <option>April</option>
+            <option>May</option>
+            <option>June</option>
+            <option>July</option>
+            <option>August</option>
+            <option>September</option>
+            <option>October</option>
+            <option>November</option>
+            <option>December</option>
+          </select>
+          <label for = "birth_day">Birth Day</label>
+        <select id = "birth_day" name = "birth_day">
+            <option selected disabled hidden>Select Day</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+            <option>16</option>
+            <option>17</option>
+            <option>18</option>
+            <option>19</option>
+            <option>20</option>
+            <option>21</option>
+            <option>22</option>
+            <option>23</option>
+            <option>24</option>
+            <option>25</option>
+            <option>26</option>
+            <option>27</option>
+            <option>28</option>
+            <option>29</option>
+            <option>30</option>
+            <option>31</option>
+          </select>
+        <label for = "birth_year">Birth Year</label>
+        <input type="text" id = "birth_year" name = "birth_year" required>
+        
+    </div>
+    <div>
+        <label for = "age">Age</label>
+        <input type="text" id = "age" name = "age" required>
+    </div>
+    <div>
+        <label for = "insurance">Insurance</label>
+        <input type="text" id = "insurance" name = "insurance">
+    </div>
+    <div>
+        <label for = "pcp">PCP</label>
+        <input type="text" id = "pcp" name = "pcp">
+    </div>
+    <button type = "submit">Register</button>
+</form>

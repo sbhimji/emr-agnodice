@@ -1,0 +1,31 @@
+table{
+    border: 1px solid black;
+    border-collapse: collapse;
+    Overflow-y:scroll;
+    /*background-color: rgb(144,238,144); */
+  }
+tr, td {
+  height: 20px;
+  background-color: rgb(255, 213, 128);
+  border-bottom: 1px solid black;
+}
+
+th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    background-color: rgb(144,238,144);
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.link {
+  padding: 20px, 20px, 20px, 20px;
+}
+
+.recLabel {
+  margin-left: 178px;
+  margin-bottom: 5px;
+}
