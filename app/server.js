@@ -149,7 +149,7 @@ app.get('/visit-record', async (req, res) => {
     }
     //visitData = new VisitWithID(req.query.visit_id);
     //await (visitData.initializeDataById());
-    await res.render('visit-record.ejs', { visit: visitData, title: 'Visit Record'})
+    await res.render('visit-record.ejs', { visit: visitData, patient: patientData, title: 'Visit Record'})
 }) 
 
 app.post('/visit', async (req, res) => {

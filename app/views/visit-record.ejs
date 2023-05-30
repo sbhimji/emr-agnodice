@@ -1,16 +1,69 @@
 <head>
     <title> <%= title %></title>
-    <link rel = "stylesheet" type = "text/css" href = "patient-record.css" />
+    <link rel = "stylesheet" type = "text/css" href = "style/visit-record.css" />
 </head>
 <body>
     <h2 class = "link"><a href = "/home">Home</a></h2> 
-    <h1>Visit Date: <%= visit.date %></h1>
-    <h1>Event Name: <%= visit.event %></h1>
-    <h1>Event Name: <%= visit.physician %></h1>
-    
-    
     <div>
-        <a href = "/patient-record" class = "infoLabel">Back to Patient</a>
+        <h1><a href = "/patient-record" class = "infoLabel">Patient: <%= patient.fName %> <%= patient.lName %></a></h1>
     </div>
+    
+
+    <label for "div1" class = "infoLabel">Visit Info</label>
+    <div class ="genInfo" id = "div1">
+        <div>
+            <span>Visit Date:               <%= visit.date %></span>
+            <span>Event Name:               <%= visit.event %></span>
+            <span>Attending Physician:      <%= visit.physician %></span>
+        </div>
+    </div>
+
+    <label for "div2" class = "infoLabel">Vitals</label>
+    <div class ="genInfo" id = "div2">
+        <div>
+            <span>Height: </span>
+            <span>Weight:</span>
+            <span>Last Meal:</span>
+        </div>
+        <div>
+            <span class = "leftText">Pulse: </span>
+            <span class = "leftText">Blood Pressure:</span>
+            <span class = "leftText">Temperature:</span>
+        </div>
+        <div>
+            <span class = "leftText">Respiratory Rate:</span>
+            <span class = "leftText">Pulse:</span>
+            <span class = "leftText">Blood Sugar:</span>
+        </div>
+    </div>
+
+    <label for "div3" class = "infoLabel">Review of Systems</label>
+    <div class ="genInfo" id = "div3">
+        <div>
+            <span>General: </span>
+            <span>Cardio:</span>
+            <span>Resp:</span>
+        </div>
+    </div>
+
+    <label for "div4" class = "infoLabel">Physical Exams</label>
+    <div class ="genInfo" id = "div4">
+        <div>
+            <span>General Survey: </span>
+            <span>Heart:</span>
+            <span>Lungs:</span>
+        </div>
+    </div>
+
+    <label for "div5" class = "infoLabel">Physician Thoughts</label>
+    <div class ="genInfo" id = "div5">
+        <div>
+            <p></p>
+        </div>
+    </div>
+    
+    
+    
+    
     
 </body>

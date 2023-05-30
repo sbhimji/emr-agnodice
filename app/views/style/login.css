@@ -6,8 +6,6 @@ body {
     overflow: hidden;
 }
 
-
-
 .center {
     position: absolute;
     top: 50%;
@@ -17,7 +15,6 @@ body {
     border: 2px solid rgb(144,238,144);
     border-radius: 10px;
   }
-
 
   .center h2 {
     text-align: center;

@@ -87,7 +87,7 @@ class Patient {
             .query(text2, values2)
             .then(async (res) => {
                 const visit = new Visit(res.rows[0].visit_id, this.patient_id, event, date, physician);
-                console.log("Visit added");
+                console.log("Visit added GOOD SHIT BRO");
                 this.visits.push(visit);
                 //return visit;
             })
