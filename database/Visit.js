@@ -5,7 +5,7 @@ class Visit {
         ros_general, ros_cardio, ros_resp, ros_skin, ros_heent, ros_gi, ros_gu, ros_mus, ros_endo, phys_gen_norm, phys_gen_ab,
         phys_heart_norm, phys_heart_ab, phys_lungs_norm, phys_lungs_ab, phys_skin_norm, phys_skin_ab, phys_heent_norm, phys_heent_ab,
         phys_abdo_norm, phys_abdo_ab, phys_mus_norm, phys_mus_ab, phys_neuro_norm, phys_neuro_ab, phys_omm_norm, phys_omm_ab, 
-        phys_other_norm, phys_other_ab, hpi, phys_thoughts, phys_name, reff, patient_agreement, med_presc, health_iss = [], diffs = []) {
+        phys_other_norm, phys_other_ab, hpi, phys_thoughts, phys_name, reff, patient_agreement, med_presc) {
         this.visit_id = visit_id;
         this.patient_id = patient_id;
         this.event = event;
@@ -54,8 +54,8 @@ class Visit {
         this.reff = reff;
         this.patient_agreement = patient_agreement;
         this.med_presc = med_presc;
-        this.health_iss = health_iss;
-        this.diffs = diffs;
+        this.health_iss = [];
+        this.diffs = [];
     }
     
     
@@ -126,7 +126,9 @@ class Visit {
                 this.patient_agreement = res.rows[0].patient_agreement;
                 this.med_presc = res.rows[0].med_presc;
             })
-        .catch((err) => console.error('Error executing query', err.stack));
+            .catch((err) => {
+                console.error('Error executing query', err.stack);
+            });
 
         const text2 = `
         SELECT * FROM public."vitals"
@@ -146,7 +148,9 @@ class Visit {
                     this.hrs_meal = res.rows[0].hours_last_meal;
                 }
             })
-            .catch((err) => console.error('Error executing query'));
+            .catch((err) => {
+                console.error('Error executing query', err.stack);
+            })
         //.catch((err) => console.error('Error executing query', err.stack));
 
         const text3 = `
@@ -161,7 +165,9 @@ class Visit {
                     this.diffs.push(res.rows[0].Differential);
                 }
             })
-            .catch((err) => console.error('Error executing query'));
+            .catch((err) => {
+                console.error('Error executing query', err.stack);
+            });
     }
 
     async addVitals(pulse, bp, temp, resp_rate, ht, wt, blood_sug, hrs_meal) {
@@ -192,6 +198,7 @@ class Visit {
         SET ros_general = $1, ros_cardio = $2, ros_resp = $3, ros_skin = $4, ros_heent = $5, ros_gi = $6, ros_gu = $7, ros_mus = $8, ros_endo = $9
         WHERE visit_id = $10
         `
+        console.log(ros_general);
         const values = [ros_general, ros_cardio, ros_resp, ros_skin, ros_heent, ros_gi, ros_gu, ros_mus, ros_endo, this.visit_id];
         await pool
             .query(text, values)

@@ -180,20 +180,23 @@ app.post('/vitals', async (req, res) => {
 })
 
 app.post('/newROS', async (req, res) => {
-    var ros_gen = req.body.weight_loss + '/' + req.body.fatigue + '/' + req.body.sweats;
-    var ros_cardio = req.body.chestPain + '/' + req.body.palp + '/' + req.body.sob;
-    var ros_resp = req.body.coughing + '/' + req.body.wheez + '/' + req.body.diff + '/' + req.body.phlegm;
-    var ros_skin = req.body.rashes + '/' + req.body.bruis + '/' + req.body.moles;
-    var ros_heent = req.body.headaches + '/' + req.body.vis + '/' + req.body.sinus + '/' + req.body.sore;
-    var ros_gi = req.body.nausea + '/' + req.body.diar + '/' + req.body.const + '/' + req.body.bm_change;
-    var ros_mus = req.body.stiff + '/' + req.body.musc + '/' + req.body.back;
-    var ros_endo = req.body.heat + '/' + req.body.hair + '/' + req.body.thirst + '/' + req.body.polyuria;
+    const updateText = require('../app/queries/updateROSText')
+    var ros_gen = await updateText([req.body.weight_loss, req.body.fatigue, req.body.sweats]);
+    console.log(ros_gen);
+    var ros_cardio = await updateText([req.body.chestPain, req.body.palp, req.body.sob]);
+    var ros_resp = await updateText([req.body.coughing, req.body.wheez, req.body.phlegm, req.body.diff]); 
+    var ros_skin = await updateText([req.body.rashes, req.body.bruis, req.body.moles]); 
+    var ros_heent = await updateText([req.body.headaches, req.body.vis, req.body.sinus, req.body.sore]); 
+    var ros_gi = await updateText([req.body.nausea, req.body.diar, req.body.const, req.body.bm_change]);
+    var ros_mus = await updateText([req.body.stiff, req.body.musc, req.body.back]); 
+    var ros_endo = await updateText([req.body.heat,  req.body.hair, req.body.thirst, req.body.polyuria]);
 
     var ros_gu = '';
     if(patientData.sex.localeCompare('Male') === 0) {
-        ros_gu = req.body.penile + '/' + req.body.dysuria + '/' + req.body.tes + '/' + req.body.hernias;
+        ros_gu = await updateText([req.body.penile,  req.body.dysuria, req.body.tes, req.body.hernias]);
     } else {
-        ros_gu = req.body.lmp + '/' + req.body.regular + '/' + req.body.tamp + '/' + req.body.breast + '/' + req.body.vag + '/' + req.body.dysuria2;
+        ros_gu = await updateText([req.body.lmp, req.body.regular,  req.body.tamp, req.body.breast, req.body.vag, req.body.dysuria2, req.body.tes, req.body.hernias]);
+   
     }
     await visitData.addROS(ros_gen, ros_cardio, ros_resp, ros_skin, ros_heent, ros_gi, ros_gu, ros_mus, ros_endo);
     res.redirect('/visit-record')

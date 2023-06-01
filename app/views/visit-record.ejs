@@ -23,6 +23,30 @@
         </div>
     </div>
 
+    <!-- <label for "divz" class = "infoLabel">Family History</label>
+    <div class ="genInfo" id = "divz">
+        <div>
+            <label for "famHist">Family History</label>
+            <div id = "famHist">
+                <span>Father: <%= visit.date %></span>
+                <span>Mother: <%= visit.event %></span>
+                <span>Siblings: <%= visit.physician %></span>
+                <span>Children: <%= visit.physician %></span>
+            </div>
+            <label for "socHist">Family History</label>
+            <div id = "socHist">
+                <span>Occupation: <%= visit.date %></span>
+                <span>Diet: <%= visit.event %></span>
+                <span>Excercise: <%= visit.physician %></span>
+                <span>Housing: <%= visit.physician %></span>
+                <span>Substance Use: <%= visit.physician %></span>
+                <span>Marijuana Use: <%= visit.physician %></span>
+                <span>Fun Drugs: <%= visit.physician %></span>
+            </div>
+            
+        </div>
+    </div> -->
+
     <label for "divx" class = "infoLabel">HPI</label>
     <div class ="genInfo" id = "divx">
         <div>
@@ -49,21 +73,21 @@
     </div>
 
     <label for "div3" class = "infoLabel">Review of Systems</label>
-    <div class ="genInfo" id = "div3">
+    <div class ="genInfo2" id = "div3">
         <div>
             <span>General: <%= visit.ros_general %></span>
             <span>Cardio: <%= visit.ros_cardio %></span>
             <span>Resp: <%= visit.ros_resp %></span>
         </div>
         <div>
-            <span class = "leftText">Skin: <%= visit.ros_skin %></span>
-            <span class = "leftText">HEENT: <%= visit.ros_heent %></span>
-            <span class = "leftText">GI: <%= visit.ros_gi %></span>
+            <span>Skin: <%= visit.ros_skin %></span>
+            <span>HEENT: <%= visit.ros_heent %></span>
+            <span>GI: <%= visit.ros_gi %></span>
         </div>
         <div>
-            <span class = "leftText">GU: <%= visit.ros_gu %></span>
-            <span class = "leftText">Mus/Sk: <%= visit.ros_mus %></span>
-            <span class = "leftText">Endo: <%= visit.ros_endo %></span>
+            <span>GU: <%= visit.ros_gu %></span>
+            <span>Mus/Sk: <%= visit.ros_mus %></span>
+            <span>Endo: <%= visit.ros_endo %></span>
         </div>
     </div>
 

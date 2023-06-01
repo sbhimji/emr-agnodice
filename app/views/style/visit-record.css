@@ -27,6 +27,23 @@ h1 {
     margin-right: auto;
 }
 
+.genInfo2 {
+    width: 75%;
+    /* background-color: rgb(144,238,144); */
+    border: 2px solid black;
+    padding: 7px;
+    margin-top: 5px;
+    margin-bottom: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.genInfo2 span {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
 .genInfo span {
     display: block;
     margin-top: 5px;
@@ -38,7 +55,7 @@ h1 {
 }
 
 .infoLabel {
-    margin-left: 165px;
+    margin-left: 166px;
     font-weight: bold;
     margin-top: 30px;
 }
