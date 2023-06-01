@@ -49,7 +49,9 @@ class PatientWithID {
       .query(qtext, qvalues)
       .then(async (res) => {
         await Promise.all(res.rows.map(async (row) => {
-          const visit1 = new Visit(row.visit_id, null, null, null, null);
+          const visit1 = new Visit(row.visit_id, null, null, null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
           //await visit1.initializeDataById();
           await visit1.getById(row.visit_id);
           await this.visits.push(visit1);
@@ -99,7 +101,9 @@ class PatientWithID {
     await pool
         .query(text2, values2)
         .then(async (res) => {
-            const visit = new Visit(res.rows[0].visit_id, this.patient_id, event, date, physician);
+            const visit = new Visit(res.rows[0].visit_id, this.patient_id, event, date, physician, null, null, null, null, null, 
+              null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+              null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             console.log("Visit added");
             this.visits.push(visit);
             //return visit;

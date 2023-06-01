@@ -1,0 +1,53 @@
+<h2 class = "link"><a href = "/home">Home</a></h2> 
+<h1>Add MDM</h1> 
+
+<div>
+
+</div>
+<form action ="/newAssessment" method = 'POST'>
+    <div>
+        <label for = "health">Health Issue</label>
+        <input type="text" id = "health" name = "health" required>
+        <label for = "diff">Differential</label>
+        <input type="text" id = "diff" name = "diff" required>
+    </div>
+    <button type = "submit">Add Assessment</button>
+</form>
+<!-- </form>
+<!-- <form action ="/newMedicine" method = 'POST'>
+    <div>
+        <label for = "med">Medicine Prescribed</label>
+        <input type="text" id = "med" name = "med" required>
+        <!-- <label for = "instr">Instructions</label>
+        <input type="text" id = "instr" name = "instr" required> -->
+    <!-- </div>
+    <button type = "submit">Add Medicine</button>
+</form> --> 
+<form action ="/newMDM" method = 'POST'>
+    <div>
+        <label for = "thoughts">Physician Thoughts</label>
+        <input type="text" id = "thoughts" name = "thoughts" required>
+    </div>
+    <div>
+        <label for = "name">Attending Physician Name</label>
+        <input type="text" id = "name" name = "name" required>
+    </div>
+    <div>
+        <label for = "ref">Referrals</label>
+        <input type="text" id = "ref" name = "ref" required>
+    </div>
+    <div>
+        <label for = "plan">Patient agrees to plan</label>
+        <select id = "plan" name = "plan"  type = "text" required>
+            <option>No</option>
+            <option>Yes</option>
+        </select>
+    </div>
+    <div>
+        <label for = "med">Medicines Prescribed</label>
+        <input type="text" id = "med" name = "med" required>
+        <!-- <label for = "instr">Instructions</label>
+        <input type="text" id = "instr" name = "instr" required> -->
+    </div>
+    <button type = "submit">Add Physician Thoughts</button>
+</form>

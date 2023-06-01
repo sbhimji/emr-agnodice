@@ -53,7 +53,9 @@ class Patient {
     }
 
     async addVisit(event, date, physician) {
-        const visit = new Visit(null, this.patient_id, event, date, physician);
+        const visit = new Visit(null, this.patient_id, event, date, physician, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         
 
         const text = `
@@ -86,8 +88,10 @@ class Patient {
         await pool
             .query(text2, values2)
             .then(async (res) => {
-                const visit = new Visit(res.rows[0].visit_id, this.patient_id, event, date, physician);
-                console.log("Visit added GOOD SHIT BRO");
+                const visit = new Visit(res.rows[0].visit_id, this.patient_id, event, date, physician, null, null, null, null, null, 
+                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                console.log("Visit added");
                 this.visits.push(visit);
                 //return visit;
             })

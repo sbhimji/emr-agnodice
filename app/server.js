@@ -27,29 +27,45 @@ let visitData = null;
 let visFound = false;
 
 app.post('/patient', async (req, res) => {
-    patientData = new Patient(req.body.fname, req.body.lname, req.body.sex, req.body.birth_year, req.body.birth_month, req.body.birth_day, req.body.age, req.body.insurance, req.body.pcp);
+    patientData = new Patient(req.body.fname, req.body.lname, req.body.sex, req.body.birth_year, 
+        req.body.birth_month, req.body.birth_day, req.body.age, req.body.insurance, req.body.pcp);
     await patientData.initializeData();
-    res.redirect('/patient-record')
+    res.direct('/patient-record')
 })
 
 
 
-app.post('/login', async (req, res) => {
+app.post('/login', async (req, response) => {
     const date = new Date();
     const text = `
-        INSERT INTO public."login"(
-            date, username)
-            VALUES ($1, $2);
-        `
-    const values = [date, req.body.username];
-    pool            
+    SELECT * FROM public."Users"
+    WHERE username = $1
+    `;
+    // const text = `
+    //     INSERT INTO public."login"(
+    //         date, username)
+    //         VALUES ($1, $2);
+    //     `
+    const values = [req.body.username];
+    await pool            
         .query(text, values)
         .then((res) => {
-            console.log("Login attempt logged successfully.")
+            if (res.rowCount === 0) {
+                console.log('Account not found.')
+                response.redirect('/');
+            } else {
+                if ((req.body.password).localeCompare(res.rows[0].password) === 0) {
+                    console.log("Login attempt logged successfully.")
+                    response.redirect('/home');
+                } else {
+                    console.log("Incorrect username/password.")
+                    response.redirect('/');
+                }
+            }
             
         })
-        .catch((err) => console.error('Error executing query', err.stack))
-    res.redirect('/home')
+        .catch((err) => console.log("ERROR", err.stack))
+    
 })
 
 app.post('/searchPatient', async (req, res) => {
@@ -143,28 +159,105 @@ app.get('/patient-record', async (req, res) => {
 app.get('/visit-record', async (req, res) => {
     if (Object.keys(req.query).length > 0) {
         console.log(req.query.visit_id);
-        visitData = new Visit(req.query.visit_id, null, null, null, null);
+        visitData = new Visit(req.query.visit_id, null, null, null, null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         await visitData.getById(req.query.visit_id);
-        //await patientData.getById();
     }
-    //visitData = new VisitWithID(req.query.visit_id);
-    //await (visitData.initializeDataById());
     await res.render('visit-record.ejs', { visit: visitData, patient: patientData, title: 'Visit Record'})
 }) 
 
 app.post('/visit', async (req, res) => {
     await patientData.addVisit(req.body.eventName, req.body.visitDate, req.body.phys);
-    //visitData = await patientData.addVisit(req.body.eventName, req.body.visitDate, req.body.phys);
 
     await res.render('patient-record.ejs', { patient: patientData, title: 'Patient Record'})
 })
 
+app.post('/vitals', async (req, res) => {
+    await visitData.addVitals(req.body.pulse, req.body.bp, req.body.temp, req.body.r_rate,
+        req.body.height, req.body.weight, req.body.blood_sug, req.body.hrs_meal);
+    res.redirect('/visit-record')
+})
+
+app.post('/newROS', async (req, res) => {
+    var ros_gen = req.body.weight_loss + '/' + req.body.fatigue + '/' + req.body.sweats;
+    var ros_cardio = req.body.chestPain + '/' + req.body.palp + '/' + req.body.sob;
+    var ros_resp = req.body.coughing + '/' + req.body.wheez + '/' + req.body.diff + '/' + req.body.phlegm;
+    var ros_skin = req.body.rashes + '/' + req.body.bruis + '/' + req.body.moles;
+    var ros_heent = req.body.headaches + '/' + req.body.vis + '/' + req.body.sinus + '/' + req.body.sore;
+    var ros_gi = req.body.nausea + '/' + req.body.diar + '/' + req.body.const + '/' + req.body.bm_change;
+    var ros_mus = req.body.stiff + '/' + req.body.musc + '/' + req.body.back;
+    var ros_endo = req.body.heat + '/' + req.body.hair + '/' + req.body.thirst + '/' + req.body.polyuria;
+
+    var ros_gu = '';
+    if(patientData.sex.localeCompare('Male') === 0) {
+        ros_gu = req.body.penile + '/' + req.body.dysuria + '/' + req.body.tes + '/' + req.body.hernias;
+    } else {
+        ros_gu = req.body.lmp + '/' + req.body.regular + '/' + req.body.tamp + '/' + req.body.breast + '/' + req.body.vag + '/' + req.body.dysuria2;
+    }
+    await visitData.addROS(ros_gen, ros_cardio, ros_resp, ros_skin, ros_heent, ros_gi, ros_gu, ros_mus, ros_endo);
+    res.redirect('/visit-record')
+})
+
+app.post('/newPhys', async (req, res) => {
+    console.log(req.body.gen_norm)
+    await visitData.addPhys(req.body.gen_norm, req.body.gen_ab, req.body.heart_norm, req.body.heart_ab, 
+        req.body.lung_norm, req.body.lung_ab, req.body.skin_norm, req.body.skin_ab, req.body.heent_norm, req.body.heent_ab,
+        req.body.abdo_norm, req.body.abdo_ab, req.body.mus_norm, req.body.mus_ab, req.body.neuro_norm, req.body.neuro_ab, req.body.omm_norm, req.body.omm_ab, 
+        req.body.phys_oth_norm, req.body.phys_oth_ab);
+    res.redirect('/visit-record');
+})
+
+app.post('/newHPI', async (req, res) => {
+    await visitData.addHPI(req.body.hpi);
+    res.redirect('/visit-record');
+})
+
+app.post('/newAssessment', async (req, res) => {
+    await visitData.addAssessment(req.body.health, req.body.diff);
+    res.redirect('/newMDM');
+})
+
+// app.post('/newMedicine', async (req, res) => {
+//     await visitData.addMedicine(req.body.medicine);
+//     res.redirect('/newMDM');
+// })
+
+app.post('/newMDM', async (req, res) => {
+    await visitData.addMDM(req.body.thoughts, req.body.name, req.body.ref, req.body.plan, req.body.med);
+    res.redirect('/visit-record');
+})
+
+app.get('/newPhys', (req, res) => {
+    res.render('newPhys.ejs', {title: 'Add Physical Exam'})
+})
+app.get('/newMDM', (req, res) => {
+    res.render('newMDM.ejs', {title: 'Add MDM'})
+})
+
+
+app.get('/newHPI', (req, res) => {
+    res.render('newHPI.ejs', {title: 'Add HPI'})
+})
+
 app.get('/newPatient', (req, res) => {
-    res.render('newPatient.ejs')
+    res.render('newPatient.ejs', {title: 'Add Patient'})
+})
+
+app.get('/newHPI', (req, res) => {
+    res.render('newHPI.ejs', {title: 'Add HPI'})
+})
+
+app.get('/newVitals', (req, res) => {
+    res.render('newVitals.ejs', {title: 'Add Vitals'})
 })
 
 app.get('/newVisit', (req, res) => {
-    res.render('newVisit.ejs')
+    res.render('newVisit.ejs', {title: 'Add Visit'})
+})
+
+app.get('/newROS', (req, res) => {
+    res.render('newROS.ejs', {patient: patientData, title: 'Review of Systems'})
 })
 
 app.listen(port, () => {

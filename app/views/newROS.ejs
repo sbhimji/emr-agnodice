@@ -1,0 +1,131 @@
+<h2 class = "link"><a href = "/home">Home</a></h2> 
+<h1>Add Review of Systems</h1> 
+<form action ="/newROS" method = 'POST'>
+    <label for = "general">General</label>
+    <div id = "general">
+        <input type="checkbox" id = "weight_loss" name = "weight_loss" value = "Unintentional Weight Loss">
+        <label for="weight_loss">Unintentional Weight Loss</label><br>
+        <input type="checkbox" id = "fatigue" name = "fatigue"  value = "Fatigue">
+        <label for="fatigue">Fatigue</label><br>
+        <input type="checkbox" id = "sweats" name = "sweats"  value = "Night Sweats">
+        <label for="sweats">Night Sweats</label><br>
+        <!-- <input type="checkbox" id = "wnl1" name = "wnl1"  value = "Within normal limits">
+        <label for="wnl1">Within normal limits</label><br> -->
+    </div>
+    <label for = "cardio">Cardio</label>
+    <div id = "cardio">
+        <input type="checkbox" id = "chestPain" name = "chestPain" value = "Chest Pain">
+        <label for="chestPain">Chest Pain</label><br>
+        <input type="checkbox" id = "palp" name = "palp" value = "Palpitations">
+        <label for="palp">Palpitations</label><br>
+        <input type="checkbox" id = "sob" name = "sob" value = "SOB on exertion">
+        <label for="sob">SOB on exertion</label><br>
+        <input type="checkbox" id = "wnl2" name = "wnl2"  value = "Within normal limits">
+        <label for="wnl2">Within normal limits</label><br>
+    </div>
+    <label for = "resp">Respiratory</label>
+    <div id = "resp">
+        <input type="checkbox" id = "coughing" name = "coughing" value = "Coughing">
+        <label for="coughing">Coughing</label><br>
+        <input type="checkbox" id = "wheez" name = "wheez" value = "Wheezing">
+        <label for="wheez">Wheezing</label><br>
+        <input type="checkbox" id = "diff" name = "diff" value = "Dyspnea (difficulty breathing)">
+        <label for="diff">Dyspnea (difficulty breathing)</label><br>
+        <input type="checkbox" id = "phlegm" name = "phlegm" value = "Phlegm">
+        <label for="phlegm">Phlegm</label><br>
+        <input type="checkbox" id = "wnl3" name = "wnl3"  value = "Within normal limits">
+        <label for="wnl3">Within normal limits</label><br>
+    </div>
+    <label for = "skin">Skin</label>
+    <div id = "skin">
+        <input type="checkbox" id = "rashes" name = "rashes" value = "Rashes">
+        <label for="rashes">Rashes</label><br>
+        <input type="checkbox" id = "bruis" name = "bruis" value = "Bruising">
+        <label for="bruis">Bruising</label><br>
+        <input type="checkbox" id = "moles" name = "moles" value = "Changes in any moles">
+        <label for="moles">Changes in any moles</label><br>
+        <input type="checkbox" id = "wnl4" name = "wnl4"  value = "Within normal limits">
+        <label for="wnl4">Within normal limits</label><br>
+    </div>
+    <label for = "heent">HEENT</label>
+    <div id = "heent">
+        <input type="checkbox" id = "headaches" name = "headaches" value = "Headaches">
+        <label for="headaches">Headaches</label><br>
+        <input type="checkbox" id = "vis" name = "vis" value = "Vision changes">
+        <label for="vis">Vision Changes</label><br>
+        <input type="checkbox" id = "sinus" name = "sinus" value = "Sinus problems">
+        <label for="sinus">Sinus problems</label><br>
+        <input type="checkbox" id = "sore" name = "sore" value = "Sore throat">
+        <label for="sore">Sore throat</label><br>
+        <input type="checkbox" id = "wnl5" name = "wnl5"  value = "Within normal limits">
+        <label for="wnl5">Within normal limits</label><br>
+    </div>
+    <label for = "gi">GI</label>
+    <div id = "gi">
+        <input type="checkbox" id = "nausea" name = "nausea" value = "Nausea">
+        <label for="nausea">Nausea</label><br>
+        <input type="checkbox" id = "diar" name = "diar" value = "Diarrhea">
+        <label for="diar">Diarrhea</label><br>
+        <input type="checkbox" id = "const" name = "const" value = "Constipation">
+        <label for="const">Constipation</label><br>
+        <input type="checkbox" id = "bm_change" name = "bm_change" value = "Change in BM">
+        <label for="bm_change">Change in BM</label><br>
+        <input type="checkbox" id = "wnl6" name = "wnl6"  value = "Within normal limits">
+        <label for="wnl6">Within normal limits</label><br>
+    </div>
+    <label for = "gu">GU</label>
+    <div id = "gu">
+        <% if(patient.sex.localeCompare('Male') === 0) { %>
+            <input type="checkbox" id = "penile" name = "penile" value = "Penile Discharge">
+            <label for="penile">Penile Discharge</label><br>
+            <input type="checkbox" id = "dysuria" name = "dysuria" value = "Dysuria">
+            <label for="dysuria">Dysuria</label><br>
+            <input type="checkbox" id = "test" name = "tes" value = "Scrotal or testicular pain">
+            <label for="test">Scrotal or testicular pain</label><br>
+            <input type="checkbox" id = "hernias" name = "hernias" value = "Hernias">
+            <label for="hernias">Hernias</label><br>
+            <input type="checkbox" id = "wnl7" name = "wnl7"  value = "Within normal limits">
+            <label for="wnl7">Within normal limits</label><br>
+         <% } else{ %>
+            <input type="checkbox" id = "lmp" name = "lmp" value = "lmp">
+            <label for="lmp">Date of LMP</label><br>
+            <input type="checkbox" id = "regular" name = "regular" value = "regular">
+            <label for="regular">Regular?</label><br>
+            <input type="checkbox" id = "tamp" name = "tamp" value = "Need tampons">
+            <label for="tamp">Need tampons</label><br>
+            <input type="checkbox" id = "breast" name = "breast" value = "New breast lumps">
+            <label for="breast">New breast lumps</label><br>
+            <input type="checkbox" id = "vag" name = "vag" value = "Vaginal discharge">
+            <label for="vag">Vaginal discharge</label><br>
+            <input type="checkbox" id = "dysuria2" name = "dysuria2" value = "Dysuria">
+            <label for="dysuria2">Dysuria</label><br>
+            <input type="checkbox" id = "wnl7" name = "wnl7"  value = "Within normal limits">
+            <label for="wnl7">Within normal limits</label><br>
+          <% } %>
+    </div>
+    <label for = "mus">Mus/Sk</label>
+    <div id = "mus">
+        <input type="checkbox" id = "stiff" name = "stiff" value = "Joint pain or stiffness">
+        <label for="stiff">Joint pain or stiffness</label><br>
+        <input type="checkbox" id = "musc" name = "musc" value = "Muscle pain">
+        <label for="musc">Muscle Pain</label><br>
+        <input type="checkbox" id = "back" name = "back" value = "Backache">
+        <label for="back">Backache</label><br>
+        <input type="checkbox" id = "wnl8" name = "wnl8"  value = "Within normal limits">
+        <label for="wnl8">Within normal limits</label><br>
+    </div>
+    <label for = "endo">Endo</label>
+    <div id = "endo">
+        <input type="checkbox" id = "heat" name = "heat" value = "Heat or cold intol.">
+        <label for="heat">Heat or cold intol.</label><br>
+        <input type="checkbox" id = "hair" name = "hair" value = "Hair or nail changes">
+        <label for="hair">Hair or nail changes</label><br>
+        <input type="checkbox" id = "thirst" name = "thirst" value = "Excess thirst">
+        <label for="thirst">Excess thirst</label><br>
+        <input type="checkbox" id = "polyuria" name = "polyuria" value = "Polyuria">
+        <label for="polyuria">Polyuria</label><br>
+        <input type="checkbox" id = "wnl9" name = "wnl9"  value = "Within normal limits">
+        <label for="wnl9">Within normal limits</label><br>
+    </div>
+    <button type = "submit">Add Vitals</button>
+</form>
