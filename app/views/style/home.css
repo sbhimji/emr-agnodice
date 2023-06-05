@@ -6,14 +6,42 @@ table{
   }
 tr, td {
   height: 20px;
-  background-color: rgb(255, 213, 128);
+  background-color: rgb(144,238,144);
+  /* background-color: rgb(255, 213, 128); */
   border-bottom: 1px solid black;
+  text-align: center;
 }
 
 th {
     border: 1px solid black;
     border-collapse: collapse;
-    background-color: rgb(144,238,144);
+    /* background-color:rgb(34,139,34); */
+    background-color: rgb(255, 213, 128);
+    /* background-color: rgb(144,238,144); */
+}
+
+.topright {
+  position: absolute;
+  top: 2px;
+  right: 16px;
+  font-size: 18px;
+}
+
+.topleft {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
+
+.search {
+    width: 98%;
+    /* background-color: rgb(144,238,144); */
+    border: 2px solid black;
+    padding: 7px;
+    margin-top: 70px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .center {
@@ -21,8 +49,10 @@ th {
     margin-right: auto;
 }
 
-.link {
-  padding: 20px, 20px, 20px, 20px;
+.linkz {
+  /* padding: 20px, 20px, 20px, 20px; */
+  margin-top: 5px;
+  margin-left: 20px;
 }
 
 .recLabel {

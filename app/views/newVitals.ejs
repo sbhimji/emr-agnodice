@@ -1,37 +1,39 @@
 <h2 class = "link"><a href = "/home">Home</a></h2> 
+<h2 class = "link"><a href = "/visit-record?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Back to visit</a></h2>
+<h3><a href = "/">Logout</a></h3>
 <h1>Add Vitals</h1> 
-<form action ="/vitals" method = 'POST'>
+<form action ="/vitals?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
     <div>
         <label for = "pulse">Pulse (bpm)</label>
-        <input type="text" id = "pulse" name = "pulse" required>
+        <input type="text" id = "pulse" name = "pulse" value = "<%= visit.pulse %>" required>
     </div>
     <div>
-        <label for = "bp">Blood Pressure</label>
-        <input type="text" id = "bp" name = "bp" required>
+        <label for = "bp">Blood Pressure (mmHg)</label>
+        <input type="text" id = "bp" name = "bp" value = "<%= visit.bp %>" required>
     </div>
     <div>
         <label for = "temp">Temperature (°F)</label>
-        <input type="text" id = "temp" name = "temp" required>
+        <input type="text" id = "temp" name = "temp" value = "<%= visit.temp %>" required>
     </div>
     <div>
         <label for = "r_rate">Respiratory Rate (breaths/min): </label>
-        <input type="text" id = "r_rate" name = "r_rate" required>
+        <input type="text" id = "r_rate" name = "r_rate" value = "<%= visit.resp_rate %>" required>
     </div>
     <div>
         <label for = "height">Height (ft):</label>
-        <input type="text" id = "height" name = "height" required>
+        <input type="text" id = "height" name = "height" value = "<%= visit.ht %>" required>
     </div>
     <div>
         <label for = "weight">Weight (lbs):</label>
-        <input type="text" id = "weight" name = "weight" required>
+        <input type="text" id = "weight" name = "weight" value = "<%= visit.wt %>" required>
     </div>
     <div>
-        <label for = "blood_sug">Blood Sugar (mgl/dL)</label>
-        <input type="text" id = "blood_sug" name = "blood_sug">
+        <label for = "blood_sug">Blood Glucose (mgl/dL)</label>
+        <input type="text" id = "blood_sug" name = "blood_sug" value = "<%= visit.blood_sug %>" >
     </div>
     <div>
         <label for = "hrs_meal">Hrs Since Last Meal</label>
-        <input type="text" id = "hrs_meal" name = "hrs_meal"
+        <input type="text" id = "hrs_meal" name = "hrs_meal" value = "<%= visit.hrs_meal %>" >
     </div>
     <button type = "submit">Add Vitals</button>
 </form>

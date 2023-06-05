@@ -1,10 +1,14 @@
 <head> 
   <link rel = "stylesheet" type = "text/css" href = "style/login.css" />
+  <link rel="icon" type="png" href="img/logo5.png"/>
 </head> 
-<body> 
-  <img src="../img/IMG_6304.jpg" alt="Logo">
+<body style = "background-color:rgb(242, 246, 216)"> 
+  
+  <!-- <img src="img/IMG_6304.jpg" alt="Logo" width="500" height="600"> -->
+  <img src="img/logo2.png" alt="Logo" width="400" height="320" class = "image">
   <div class = "center"> 
     <h2 color = "rgb(144,238,144)">Login</h2> 
+    <span class = "incorrect"><%= str %></span>
     <form action="/login" method="post"> 
       <div class = "text-field">
         <input type="text" id="username" name="username" placeholder="Username" required> 

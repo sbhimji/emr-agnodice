@@ -2,20 +2,19 @@
     <title> <%= title %></title>
     <link rel = "stylesheet" type = "text/css" href = "style/patient-record.css" />
 </head>
-<body>
+<body style = "background-color:rgb(242, 246, 216)">
     <h2 class = "link"><a href = "/home">Home</a></h2> 
+    <h3><a href = "/">Logout</a></h3>
     <h1>Patient: <%= patient.fName %> <%= patient.lName %></h1>
     
     <label for "div1" class = "infoLabel">General Patient Info</label>
     <div class ="genInfo" id = "div1">
         <div>
-            <span>Birthday: <%= patient.birth_month %> <%= patient.birth_day %>, <%= patient.birth_year %></span>
+            <span>DOB: <%= patient.birth_month %> <%= patient.birth_day %>, <%= patient.birth_year %></span>
             <span>Sex: <%= patient.sex %></span>
             <span>Age: <%= patient.age %></span>
-        </div>
-        <div>
-            <span class = "leftText">Insurance: <%= patient.insurance %></span>
-            <span class = "leftText">PCP: <%= patient.pcp %></span>
+            <span>Insurance: <%= patient.insurance %></span>
+            <span>PCP: <%= patient.pcp %></span>
         </div>
     </div>
 
@@ -29,7 +28,7 @@
             </tr>
             <% patient.visits.forEach(function(visit) { %> 
                 <tr>
-                  <td><a href="/visit-record?visit_id=<%= visit.visit_id %>"><%= visit.date %></a></td>
+                  <td><a href="/visit-record?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>"><%= visit.date %></a></td>
                   <td><%= visit.event%></td>
                   <td><%= visit.physician%></td>
                   </tr>
@@ -37,7 +36,7 @@
                 </table>
     </div>
     <div>
-        <a href = "/newVisit" class = "infoLabel">Add Visit</a>
+        <a href = "/newVisit?patient_id=<%= patient.patient_id %>" class = "infoLabel">Add Visit</a>
     </div>
     
 </body>
