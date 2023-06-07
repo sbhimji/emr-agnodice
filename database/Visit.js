@@ -52,6 +52,30 @@ class Visit {
         this.med_presc = null;
         this.health_iss = [];
         this.diffs = [];
+        this.occupation = null;
+        this.diet = null;
+        this.exercise = null;
+        this.curr_hous = null;
+        this.yr3_hous = null;
+        this.caffeine = null;
+        this.alc = null
+        this.packs_day = null;
+        this.yrs = null;
+        this.pack_yrs = null;
+        this.marijuana = null;
+        this.quit = null;
+        this.fun_drugs = null;
+        this.sex_act = null;
+        this.partners = null;
+        this.protection = null;
+        this.sti = null;
+        this.mother = null;
+        this.father = null;
+        this.siblings = null;
+        this.children = null;
+        this.sig_other = null;
+        this.fam_added = null;
+        this.soc_added = null;
     }
     
     
@@ -130,33 +154,33 @@ class Visit {
                 this.wt = res.rows[0].weight;
                 this.blood_sug = res.rows[0].blood_sugar;
                 this.hrs_meal = res.rows[0].hours_last_meal;
+                this.occupation = res.rows[0].soc_hist_occ;
+                this.diet = res.rows[0].soc_hist_diet;
+                this.exercise = res.rows[0].soc_hist_exc;
+                this.curr_hous = res.rows[0].curr_housing;
+                this.yr3_hous = res.rows[0].yr3_housing;
+                this.caffeine = res.rows[0].caffeine_use;
+                this.alc = res.rows[0].alc_use;
+                this.packs_day = res.rows[0].packs_day;
+                this.yrs = res.rows[0].tobac_yrs;
+                this.pack_yrs = res.rows[0].pack_yrs;
+                this.marijuana = res.rows[0].marijuana_use;
+                this.quit = res.rows[0].desire_to_quit;
+                this.sti = res.rows[0].sti;
+                this.mother = res.rows[0].fam_mother;
+                this.father = res.rows[0].fam_father;
+                this.siblings = res.rows[0].fam_siblings;
+                this.children = res.rows[0].fam_children;
+                this.fun_drugs = res.rows[0].fun_drugs;
+                this.sex_act = res.rows[0].sex_active;
+                this.partners = res.rows[0].last_year_part;
+                this.protection = res.rows[0].protection_use;
+                this.fam_added = res.rows[0].fam_added;
+                this.soc_added = res.rows[0].soc_added;
             })
             .catch((err) => {
                 console.error('Error executing query', err.stack);
             });
-
-        // const text2 = `
-        // SELECT * FROM public."vitals"
-        // WHERE visit_id = $1
-        // `;
-        // await pool
-        //     .query(text2, values)
-        //     .then((res) => {
-        //         if (res.rowCount > 0) {
-        //             this.pulse = res.rows[0].pulse_bpm;
-        //             this.bp = res.rows[0].blood_pressure;
-        //             this.temp = res.rows[0].temperature;
-        //             this.resp_rate = res.rows[0].resp_rate;
-        //             this.ht = res.rows[0].height;
-        //             this.wt = res.rows[0].weight;
-        //             this.blood_sug = res.rows[0].blood_sugar;
-        //             this.hrs_meal = res.rows[0].hours_last_meal;
-        //         }
-        //     })
-        //     .catch((err) => {
-        //         console.error('Error executing query', err.stack);
-        //     })
-        //.catch((err) => console.error('Error executing query', err.stack));
 
         const text3 = `
         SELECT * FROM public."Assessments"

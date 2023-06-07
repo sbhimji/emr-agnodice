@@ -3,6 +3,7 @@
     <link rel = "stylesheet" type = "text/css" href = "style/patient-record.css" />
 </head>
 <body style = "background-color:rgb(242, 246, 216)">
+    <!-- <img src="img/guest.jpg" alt="Patient" width="200" height="200" class = "topleft"> -->
     <h2 class = "link"><a href = "/home">Home</a></h2> 
     <h3><a href = "/">Logout</a></h3>
     <h1>Patient: <%= patient.fName %> <%= patient.lName %></h1>
@@ -10,7 +11,7 @@
     <label for "div1" class = "infoLabel">General Patient Info</label>
     <div class ="genInfo" id = "div1">
         <div>
-            <span>DOB: <%= patient.birth_month %> <%= patient.birth_day %>, <%= patient.birth_year %></span>
+            <span>DOB: <%= patient.birthday %></span>
             <span>Sex: <%= patient.sex %></span>
             <span>Age: <%= patient.age %></span>
             <span>Insurance: <%= patient.insurance %></span>

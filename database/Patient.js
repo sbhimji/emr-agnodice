@@ -2,13 +2,11 @@ const pool = require('/Users/saim_bhimji/repo/emr2/database/db.js');
 const Visit = require('../database/Visit');
 
 class Patient {
-    constructor(fName, lName, sex, birth_year, birth_month, birth_day, age, insurance, pcp) {
+    constructor(fName, lName, sex, birthday, age, insurance, pcp) {
         this.fName = fName;
         this.lName = lName;
         this.sex = sex;
-        this.birth_year = birth_year;
-        this.birth_month = birth_month;
-        this.birth_day = birth_day;
+        this.birthday = birthday;
         this.age = age;
         this.insurance = insurance;
         this.pcp = pcp;
@@ -41,14 +39,14 @@ class Patient {
     async addPatient() {
         const text = `
         INSERT INTO public."patientGenInfo"(
-        fname, lname, sex, birth_year, birth_month, birth_day, age, insurance, pcp)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
+        fname, lname, sex, birthday, age, insurance, pcp)
+        VALUES ($1, $2, $3, $4, $5, $6, $7);
         `
-        const values = [this.fName, this.lName, this.sex, this.birth_year, this.birth_month, this.birth_day, this.age, this.insurance, this.pcp];
+        const values = [this.fName, this.lName, this.sex, this.birthday, this.age, this.insurance, this.pcp];
         await pool
         .query(text, values)
         .then((res) => {console.log("Patient added")})
-        .catch((err) => console.error('Error executing query', err.stack))
+        .catch((err) => console.error('Error executing query action: add-patient', err.stack))
     }
     async getPatientId() {
         const text = `
@@ -56,11 +54,9 @@ class Patient {
             WHERE fname LIKE '%' || $1  || '%'
             AND lname LIKE '%' || $2 || '%' 
             AND sex LIKE '%' || $3 || '%' 
-            AND CAST(birth_year AS VARCHAR(4)) LIKE '%' || $4 || '%' 
-            AND birth_month LIKE '%' || $5 || '%' 
-            AND CAST(birth_day AS VARCHAR(4)) LIKE '%' || $6 || '%'
+            AND birthday LIKE '%' || $4 || '%' 
             `;
-        const values = [this.fName, this.lName, this.sex, this.birth_year, this.birth_month, this.birth_day];
+        const values = [this.fName, this.lName, this.sex, this.birthday];
         await pool
             .query(text, values)
             .then((res) => {
@@ -118,7 +114,7 @@ class Patient {
     };
 
     async addSocial(occupation, diet, exercise, curr_hous, yr3_hous, caffeine, alc, packs_day, yrs, pack_yrs, quit, marijuana, fun_drugs,
-        sex_act, partners, protection, sti) {
+        sex_act, partners, protection, sti, visit_id) {
         const text = `
         UPDATE public."patientGenInfo"
         SET soc_hist_occ = $1, soc_hist_diet = $2, soc_hist_exc = $3, curr_housing = $4, yr3_housing = $5,
@@ -151,9 +147,23 @@ class Patient {
             this.sti = sti;
         })
         .catch((err) => console.log('Error executing query', err.stack))
+
+        const text2 = `
+        UPDATE public."visit"
+        SET soc_hist_occ = $1, soc_hist_diet = $2, soc_hist_exc = $3, curr_housing = $4, yr3_housing = $5,
+            caffeine_use = $6, alc_use = $7, packs_day = $8, tobac_yrs = $9, pack_yrs = $10, desire_to_quit = $11, marijuana_use = $12,
+            fun_drugs = $13, sex_act = $14, last_year_part = $15, protection_use = $16, sti = $17, soc_added = 'true'
+        WHERE visit_id = $18
+        `
+        const values2 = [occupation, diet, exercise, curr_hous, yr3_hous, caffeine, alc, packs_day, yrs, pack_yrs, quit, marijuana, fun_drugs,
+        sex_act, partners, protection, sti, visit_id];
+
+        await pool
+        .query(text2, values2)
+        .catch((err) => console.log('Error executing query', err.stack))
     }
 
-    async addFamily(mother, father, siblings, children, sig_other) {
+    async addFamily(mother, father, siblings, children, sig_other, visit_id) {
         const text = `
         UPDATE public."patientGenInfo"
         SET fam_mother = $1, fam_father = $2, fam_siblings = $3, fam_children = $4, fam_sig_other = $5
@@ -170,6 +180,17 @@ class Patient {
             this.children = children;
             this.sig_other = sig_other;
         })
+        .catch((err) => console.log('Error executing query', err.stack))
+
+        const text2 = `
+        UPDATE public."visit"
+        SET fam_mother = $1, fam_father = $2, fam_siblings = $3, fam_children = $4, fam_sig_other = $5, fam_added = 'true'
+        WHERE visit_id = $6
+        `
+        const values2 = [mother, father, siblings, children, sig_other, visit_id];
+
+        await pool
+        .query(text2, values2)
         .catch((err) => console.log('Error executing query', err.stack))
     }
 }

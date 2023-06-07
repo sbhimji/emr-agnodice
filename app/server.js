@@ -24,16 +24,21 @@ app.use(express.urlencoded({ extended: false}))
 
 
 app.post('/patient', async (req, res) => {
-    // const today = new Date();
-    // const age = today.getFullYear() - req.body.birth_year;
-    // const monthDiff = today.getMonth() + 1 - req.body.birth_month; // +1 because getMonth() returns zero-based month
-    // const dayDiff = today.getDate() - req.body.birth_day;
+    console.log(req.body.birthday);
+    // let birthDate = req.body.birthday;
+    const today = new Date();
+    const birth = new Date(req.body.birthday);
 
-    // if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-    //     age = age - 1;
-    // }
-    let patientData = new Patient(req.body.fname, req.body.lname, req.body.sex, req.body.birth_year, 
-        req.body.birth_month, req.body.birth_day, req.body.age, req.body.insurance, req.body.pcp);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age--;
+    }
+    // let patientData = new Patient(req.body.fname, req.body.lname, req.body.sex, req.body.birth_year, 
+    //     req.body.birth_month, req.body.birth_day, age, req.body.insurance, req.body.pcp);
+    let patientData = new Patient(req.body.fname, req.body.lname, req.body.sex, req.body.birthday,
+        age, req.body.insurance, req.body.pcp);
     await patientData.initializeData();
     res.redirect('/patient-record?patient_id=' + patientData.patient_id);
 })
@@ -156,7 +161,7 @@ app.get('/', (req, res) => {
 app.get('/patient-record', async (req, res) => {
     let patientData = null;
     if (Object.keys(req.query).length > 0) {
-        console.log(req.query.patient_id);
+        console.log("Patient Record: " + req.query.patient_id);
         patientData = new PatientWithID(req.query.patient_id);
         await patientData.initializeData();
         //await patientData.getById();
@@ -171,9 +176,10 @@ app.get('/visit-record', async (req, res) => {
         console.log("YO: " + req.query.patient_id);
         patientData = new PatientWithID(req.query.patient_id);
         await patientData.getById();
-        console.log(req.query.visit_id);
+        
         visitData = new Visit(req.query.visit_id, null, null, null, null);
         await visitData.getById(req.query.visit_id);
+        console.log("Visit Record: " + req.query.visit_id);
     }
     await res.render('visit-record.ejs', { visit: visitData, patient: patientData, title: 'Visit Record'})
 }) 
@@ -183,8 +189,8 @@ app.post('/visit', async (req, res) => {
     let patientData = new PatientWithID(req.query.patient_id);
     await patientData.initializeData();
 
-    var visDate = req.body.year + '-' + req.body.month + '-' + req.body.day;
-    await patientData.addVisit(req.body.eventName, visDate, req.body.phys);
+    //var visDate = req.body.year + '-' + req.body.month + '-' + req.body.day;
+    await patientData.addVisit(req.body.eventName, req.body.visitDate, req.body.phys);
 
     await res.render('patient-record.ejs', { patient: patientData, title: 'Patient Record'})
 })
@@ -268,10 +274,10 @@ app.post('/newSocial', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    let packs_yr = parseInt(req.body.pkday) * parseInt(req.body.yrs)
+    let packs_yr = parseInt(req.body.pkday) * parseInt(req.body.yrs);
     await patientData.addSocial(req.body.occupation,req.body.diet, req.body.exercise, req.body.curr_hous, req.body.yr3_hous, 
         req.body.caffeine, req.body.alc, req.body.pkday, req.body.yrs, packs_yr, req.body.quit, req.body.marijuana, req.body.fundr, req.body.sex_act, 
-        req.body.partners, req.body.protection, req.body.sti);
+        req.body.partners, req.body.protection, req.body.sti, req.query.visit_id);
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 
@@ -304,7 +310,7 @@ app.post('/newFamily', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    await patientData.addFamily(req.body.mother, req.body.father, req.body.siblings, req.body.children, req.body.sig_other);
+    await patientData.addFamily(req.body.mother, req.body.father, req.body.siblings, req.body.children, req.body.sig_other, req.query.visit_id);
     res.redirect('/visit-record?patient_id=' + patientData.patient_id + '&visit_id=' + visitData.visit_id);
 })
 

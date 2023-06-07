@@ -19,29 +19,6 @@
         </div>
     </div>
 
-    <!-- <label for "divz" class = "infoLabel">Family History</label>
-    <div class ="genInfo" id = "divz">
-        <div>
-            <label for "famHist">Family History</label>
-            <div id = "famHist">
-                <span>Father: <%= visit.date %></span>
-                <span>Mother: <%= visit.event %></span>
-                <span>Siblings: <%= visit.physician %></span>
-                <span>Children: <%= visit.physician %></span>
-            </div>
-            <label for "socHist">Family History</label>
-            <div id = "socHist">
-                <span>Occupation: <%= visit.date %></span>
-                <span>Diet: <%= visit.event %></span>
-                <span>Excercise: <%= visit.physician %></span>
-                <span>Housing: <%= visit.physician %></span>
-                <span>Substance Use: <%= visit.physician %></span>
-                <span>Marijuana Use: <%= visit.physician %></span>
-                <span>Fun Drugs: <%= visit.physician %></span>
-            </div>
-            
-        </div>
-    </div> -->
 
     <label for "divx" class = "infoLabel"><a href = "/newHPI?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">HPI</a></label>
     <div class ="genInfo2" id = "divx">
@@ -52,6 +29,7 @@
 
     <label for "divz" class = "infoLabel"><a href = "/newSocial?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Social History</a></label>
     <div class ="genInfo2" id = "divz">
+        <% if (visit.soc_added === null || visit.soc_added === "false") {%>
         <div>
             <span>Occupation: <%= patient.occupation %></span>
             <span>Diet: <%= patient.diet %></span>
@@ -69,10 +47,30 @@
             <span>  Protection Use: <%= patient.protection %></span>
             <span>  STI: <%= patient.sti %></span>
         </div>
+        <% } else { %>
+            <div>
+                <span>Occupation: <%= visit.occupation %></span>
+                <span>Diet: <%= visit.diet %></span>
+                <span>Exercise: <%= visit.exercise %></span>
+                <span>Current Housing: <%= visit.curr_hous %></span>
+                <span>Housing in past 3 yrs: <%= visit.yr3_hous %></span>
+                <span>caffeine Use: <%= visit.caffeine %></span>
+                <span>Alcohol Use: <%= visit.alc %></span>
+                <span>Tobacco Use: <%= visit.pack_yrs %> pack-yrs</span>
+                <span>  Desire to Quit: <%= visit.quit %></span>
+                <span>Marijuana Use: <%= visit.marijuana %></span>
+                <span>Fun Drugs: <%= visit.fun_drugs %></span>
+                <span>Sexually Active: <%= visit.sex_act %></span>
+                <span>  # of partners in last yr: <%= visit.partners %></span>
+                <span>  Protection Use: <%= visit.protection %></span>
+                <span>  STI: <%= visit.sti %></span>
+            </div>
+        <% } %>
     </div>
 
     <label for "divr" class = "infoLabel"><a href = "/newFamily?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Family History</a></label>
     <div class ="genInfo2" id = "divr">
+        <% if (visit.fam_added === null || visit.fam_added === "false") {%>
         <div>
             <span>Mother: <%= patient.mother %></span>
             <span>Father: <%= patient.father %></span>
@@ -80,6 +78,15 @@
             <span>Children: <%= patient.children %></span>
             <span>Significant Other: <%= patient.sig_other %></span>
         </div>
+        <% } else { %>
+            <div>
+                <span>Mother: <%= visit.mother %></span>
+                <span>Father: <%= visit.father %></span>
+                <span>Siblings: <%= visit.siblings %></span>
+                <span>Children: <%= visit.children %></span>
+                <span>Significant Other: <%= visit.sig_other %></span>
+            </div>
+        <% } %>
     </div>
 
     <label for "div2" class = "infoLabel"><a href = "/newVitals?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Vitals</a></label>

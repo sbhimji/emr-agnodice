@@ -25,15 +25,15 @@
 <form action ="/newMDM?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
     <div>
         <label for = "thoughts">Plan of Care</label>
-        <textarea id = "thoughts" name = "thoughts" rows = "20" cols = "100" required><%= visit.phys_thoughts %></textarea>
+        <textarea id = "thoughts" name = "thoughts" maxlength = "2000" rows = "20" cols = "100" required><%= visit.phys_thoughts %></textarea>
     </div>
     <div>
         <label for = "name">Attending Physician Name</label>
-        <input type="text" id = "name" name = "name" value = "<%= visit.phys_name %>"required>
+        <input type="text" id = "name" name = "name" maxlength = "25" value = "<%= visit.phys_name %>"required>
     </div>
     <div>
         <label for = "ref">Referrals</label>
-        <input type="text" id = "ref" name = "ref" value = "<%= visit.reff %>"required>
+        <input type="text" id = "ref" name = "ref" maxlength = "255" value = "<%= visit.reff %>"required>
     </div>
     <div>
         <label for = "plan">Patient agrees to plan</label>
@@ -44,7 +44,7 @@
     </div>
     <div>
         <label for = "med">Medicines Prescribed</label>
-        <input type="text" id = "med" name = "med" value = "<%= visit.med_presc %>"required>
+        <input type="text" id = "med" name = "med" maxlength = "255" value = "<%= visit.med_presc %>"required>
         <!-- <label for = "instr">Instructions</label>
         <input type="text" id = "instr" name = "instr" required> -->
     </div>

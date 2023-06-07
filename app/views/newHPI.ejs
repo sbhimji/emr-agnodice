@@ -6,7 +6,7 @@
 <form action ="/newHPI?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
     <div>
         <label for = "hpi">HPI</label>
-        <textarea id = "hpi" name = "hpi" rows = "20" cols = "100" required><%= visit.hpi %></textarea>
+        <textarea id = "hpi" name = "hpi" rows = "20" cols = "100" maxlength="2000" required><%= visit.hpi %></textarea>
     </div>
     <button type = "submit">Add HPI</button>
 </form>
