@@ -1,4 +1,4 @@
-const pool = require('/Users/saim_bhimji/repo/emr2/database/db.js');
+const pool = require('../database/db');
 
 class Visit {
     constructor(visit_id, patient_id, event, date, physician) { 
