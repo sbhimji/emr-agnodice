@@ -1,5 +1,5 @@
 const express = require('express');
-const pool = require('/Users/saim_bhimji/repo/emr2/database/db.js');
+const pool = require('../database/db.js');
 const fs = require('fs');
 const Patient = require('../database/Patient.js');
 const PatientWithID = require('../database/PatientWithID.js');
