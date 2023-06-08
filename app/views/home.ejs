@@ -4,7 +4,7 @@
   <link rel="icon" type="png" href="img/logo4.png"/>
 </head>
 <body style = "background-color:rgb(242, 246, 216)">
-  <img src="img/logo2.png" alt="Logo" width="120" height="90" class = "topleft">
+  <img src="img/logo2.png" alt="Logo" width="120" height="90" class = "guest">
   <h3 class = "topright"><a href = "/">Logout</a></h3>
   <div>
     
@@ -16,63 +16,9 @@
             <input type="text" id = "fname" name = "fname">
             <label for = "lname">Last Name</label>
             <input type="text" id = "lname" name = "lname">
-        
-            <label for = "birth_month">Birth Month</label>
-            <select id = "birth_month" name = "birth_month" type = "text">
-              <option selected type = "text">Select Month</option>
-              <option type = "text">January</option>
-              <option type = "text">February</option>
-              <option type = "text">March</option>
-              <option type = "text">April</option>
-              <option type = "text">May</option>
-              <option type = "text">June</option>
-              <option type = "text">July</option>
-              <option type = "text">August</option>
-              <option type = "text">September</option>
-              <option type = "text">October</option>
-              <option type = "text">November</option>
-              <option type = "text">December</option>
-            </select>
-            
-            <label for = "birth_year">Birth Year</label>
-            <input type="text" id = "birth_year" name = "birth_year">
-  
-            <label for = "birth_day">Birth Day</label>
-            <select id = "birth_day" name = "birth_day"  type = "text">
-              <option selected>Select Day</option>
-              <option type = "text">1</option>
-              <option type = "text">2</option>
-              <option type = "text">3</option>
-              <option type = "text">4</option>
-              <option type = "text">5</option>
-              <option type = "text">6</option>
-              <option type = "text">7</option>
-              <option type = "text">8</option>
-              <option type = "text">9</option>
-              <option type = "text">10</option>
-              <option type = "text">11</option>
-              <option type = "text">12</option>
-              <option type = "text">13</option>
-              <option type = "text">14</option>
-              <option type = "text">15</option>
-              <option type = "text">16</option>
-              <option type = "text">17</option>
-              <option type = "text">18</option>
-              <option type = "text">19</option>
-              <option type = "text">20</option>
-              <option type = "text">21</option>
-              <option type = "text">22</option>
-              <option type = "text">23</option>
-              <option type = "text">24</option>
-              <option type = "text">25</option>
-              <option type = "text">26</option>
-              <option type = "text">27</option>
-              <option type = "text">28</option>
-              <option type = "text">29</option>
-              <option type = "text">30</option>
-              <option type = "text">31</option>
-            </select>
-        
+    
+            <label for = "birthday">Birthday</label>
+            <input id = "birthday" name = "birthday" type = "date">
       
             <label for = "mrn">MRN</label>
             <input type="text" id = "mrn" name = "mrn">
@@ -83,25 +29,25 @@
            
   </div>
   <h2 class = "linkz"><a href = "/newPatient">New Patient</a></h2> 
-  <div>
+  <div class = "scrollable">
     <h2 class = "recLabel">Patient Records</h2>
       <table class = "center" id = "queryTable" name = "openingtable" style = "width:75%">
         <tr>
           <th>MRN</th>
           <th>First Name</th>
           <th>Last Name</th>
-          <th>Birth Month</th>
-          <th>Birth Day</th>
-          <th>Birth Year</th>
+          <!-- <th>Birth Month</th> -->
+          <th>Birthday</th>
+          <!-- <th>Birth Year</th> -->
         </tr>
         <% patients.forEach(function(patient) { %> 
           <tr>
             <td><a href="/patient-record?patient_id=<%= patient.patient_id %>"><%= patient.patient_id %></a></td>
             <td><%= patient.fname %></td>
             <td><%= patient.lname %></td>
-            <td><%= patient.birth_month %></td>
-            <td><%= patient.birth_day %></td>
-            <td><%= patient.birth_year %></td>
+            <td><%= patient.birthday %></td>
+            <!-- <td><%= patient.birth_day %></td>
+            <td><%= patient.birth_year %></td> -->
             </tr>
         <% }) %>
           

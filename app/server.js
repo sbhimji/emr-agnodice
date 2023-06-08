@@ -100,29 +100,13 @@ app.post('/searchPatient', async (req, res) => {
             }
             values.push(req.body.lname.toUpperCase());
         }
-        if (req.body.birth_year.localeCompare("") != 0) {
+        if (req.body.birthday.localeCompare("") != 0) {
             if (count != 1) {
-                text += ` AND CAST(birth_year AS VARCHAR(4)) LIKE '%' || $${count++} || '%'`
+                text += ` AND UPPER(birthday) LIKE '%' || $${count++} || '%'`
             } else {
-                text += ` CAST(birth_year AS VARCHAR(4)) LIKE '%' || $${count++} || '%'`
+                text += ` UPPER(birthday) LIKE '%' || $${count++} || '%'`
             }
-            values.push(req.body.birth_year);
-        }
-        if (req.body.birth_month.localeCompare("Select Month") != 0) {
-            if (count != 1) {
-                text += ` AND birth_month LIKE '%' || $${count++} || '%'`
-            } else {
-                text += `birth_month LIKE '%' || $${count++} || '%'`
-            }
-            values.push(req.body.birth_month);
-        }
-        if (req.body.birth_day.localeCompare("Select Day") != 0) {
-            if (count != 1) {
-                text += ` AND CAST(birth_day AS VARCHAR(2)) LIKE '%' || $${count++} || '%'`
-            } else {
-                text += `CAST(birth_day AS VARCHAR(2)) LIKE '%' || $${count++} || '%'`
-            }
-            values.push(req.body.birth_day);
+            values.push(req.body.birthday);
         }
         if (req.body.mrn.localeCompare("") != 0) {
             if (count != 1) {
@@ -133,7 +117,6 @@ app.post('/searchPatient', async (req, res) => {
             values.push(req.body.mrn);
         }
         let patients = ''
-        //const values = [req.body.fname.toUpperCase(), req.body.lname.toUpperCase(), req.body.birth_year, req.body.birth_month, req.body.birth_day, req.body.mrn]
         pool
             .query(text, values)
             .then(result => {
@@ -190,7 +173,7 @@ app.post('/visit', async (req, res) => {
     await patientData.initializeData();
 
     //var visDate = req.body.year + '-' + req.body.month + '-' + req.body.day;
-    await patientData.addVisit(req.body.eventName, req.body.visitDate, req.body.phys);
+    await patientData.addVisit(req.body.eventName, req.body.visitDate, req.body.phys, req.body.consent);
 
     await res.render('patient-record.ejs', { patient: patientData, title: 'Patient Record'})
 })

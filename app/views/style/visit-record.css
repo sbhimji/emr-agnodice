@@ -1,6 +1,7 @@
-
+@font-face { font-family: Login; src: url('font.ttf'); } 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Login, sans-serif;
+    /* font-family: Arial, sans-serif; */
     margin: 0;
     padding: 20px;
 }
@@ -20,6 +21,7 @@ h1 {
 }
 
 .genInfo {
+    font-family: Login, sans-serif;
     width: 75%;
     /* background-color: rgb(144,238,144); */
     border: 2px solid black;
@@ -33,6 +35,7 @@ h1 {
 }
 
 .topright {
+    font-family: Login, sans-serif;
     position: absolute;
     top: 2px;
     right: 16px;
@@ -40,6 +43,7 @@ h1 {
   }
 
 .genInfo2 {
+    font-family: Login, sans-serif;
     width: 75%;
     /* background-color: rgb(144,238,144); */
     border: 2px solid black;

@@ -61,7 +61,7 @@ class PatientWithID {
         this.exercise = res.rows[0].soc_hist_exc;
         this.curr_hous = res.rows[0].curr_housing;
         this.yr3_hous = res.rows[0].yr3_housing;
-        this.caffeine = res.rows[0].caffiene_use;
+        this.caffeine = res.rows[0].caffeine_use;
         this.alc = res.rows[0].alc_use;
         this.tobacco = res.rows[0].tobacco_use;
         this.marijuana = res.rows[0].marijuana_use;
@@ -104,17 +104,17 @@ class PatientWithID {
     await this.getVisits();
   }
 
-  async addVisit(event, date, physician) {
+  async addVisit(event, date, physician, consent) {
     //const visit = new Visit(null, this.patient_id, event, date, physician);
     
 
     const text = `
         INSERT INTO public."visit" (
-            patient_id, event_name, visit_date, attending_physician
+            patient_id, event_name, visit_date, attending_physician, consent
         )
-        VALUES ($1, $2, $3, $4);
+        VALUES ($1, $2, $3, $4, $5);
         `;
-    const values = [this.patient_id, event, date, physician];
+    const values = [this.patient_id, event, date, physician, consent];
 
     await pool
         .query(text, values)
@@ -146,7 +146,7 @@ class PatientWithID {
     const text = `
     UPDATE public."patientGenInfo"
     SET soc_hist_occ = $1, soc_hist_diet = $2, soc_hist_exc = $3, curr_housing = $4, yr3_housing = $5,
-        caffiene_use = $6, alc_use = $7, packs_day = $8, tobac_yrs = $9, pack_yrs = $10, desire_to_quit = $11, marijuana_use = $12,
+        caffeine_use = $6, alc_use = $7, packs_day = $8, tobac_yrs = $9, pack_yrs = $10, desire_to_quit = $11, marijuana_use = $12,
         fun_drugs = $13, sex_active = $14, last_year_part = $15, protection_use = $16, sti = $17
     WHERE patient_id = $18
     `

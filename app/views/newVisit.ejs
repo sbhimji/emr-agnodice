@@ -1,5 +1,9 @@
+<head>
+    <link rel = "stylesheet" type = "text/css" href = "style/newVisit.css" />
+</head>
+
 <h2 class = "link"><a href = "/home">Home</a></h2> 
-<h3><a href = "/">Logout</a></h3>
+<h3 class = "topright"><a href = "/">Logout</a></h3>
 <h1>Add Visit</h1> 
 <form action ="/visit?patient_id=<%= patient.patient_id %>" method = 'POST'>
     <div>
@@ -15,6 +19,16 @@
         <input type="text" id = "phys" name = "phys" maxlength = "25" required>
     </div>
     <div>
+        <span><a href="File_0317.pdf" target="_blank">Consent Form</a></span>
+        <label for = "quit">Patient agrees to consent form?</label>
+            <select id = "quit" name = "quit"  type = "text" >
+                <option>No</option>
+                <option>Yes</option>
+            </select>
+    </div>
+    
+    <div>
         <button type = "submit">Add Visit</button>
     </div>
+
 </form>

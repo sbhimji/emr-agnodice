@@ -1,12 +1,41 @@
-
+@font-face { font-family: Login; src: url('font.ttf'); } 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Login, sans-serif;
     margin: 0;
     padding: 20px;
 }
 
-h2.link {
-    margin-bottom: 20px;
+/* .patient {
+    width: 75%; */
+    /* background-color: rgb(144,238,144); */
+    /* border: 2px solid black; */
+    /* padding: 7px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+} */
+
+.patient {
+    width: 75%;
+    /* background-color: rgb(144,238,144); */
+    /* border: 2px solid black; */
+    padding: 7px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.guest {
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .topright {
@@ -14,13 +43,30 @@ h2.link {
     top: 2px;
     right: 16px;
     font-size: 18px;
+    font-family: Login, sans-serif;
   }
 
+/* .name {
+    position: absolute;
+    bottom: 10;
+    margin-left: 13%;
+    font-family: Login, sans-serif;
+} */
+
+.name {
+    position: absolute;
+    bottom: 0px;
+    left: 14.5%;
+    font-family: Login, sans-serif;
+    width: 100%;
+}
 
 .topleft {
-    position: fixed;
-    top: 0px;
-    left: 0px;
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    font-size: 18px;
+    font-family: Login, sans-serif;
   }
 
 h1 {
@@ -29,11 +75,11 @@ h1 {
 }
 
 .genInfo {
+    font-family: Login, sans-serif;
     width: 75%;
     /* background-color: rgb(144,238,144); */
     border: 2px solid black;
     padding: 7px;
-    margin-top: 5px;
     margin-bottom: 30px;
     display: flex;
     flex-wrap: wrap;
@@ -43,6 +89,7 @@ h1 {
 
 .genInfo span {
     display: block;
+    margin-left: 8%;
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -57,7 +104,12 @@ h1 {
     margin-top: 40px;
 }
 
+.label {
+    font-weight: bold;
+}
+
 table{
+    font-family: Login, sans-serif;
     border: 1px solid black;
     border-collapse: collapse;
     /*background-color: rgb(144,238,144); */

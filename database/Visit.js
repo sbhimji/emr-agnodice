@@ -209,7 +209,7 @@ class Visit {
             SET pulse_bpm = $2, blood_pressure = $3, temperature = $4, resp_rate  = $5, height = $6, weight = $7
             WHERE visit_id = $1
             `
-            values = [this.patient_id, this.visit_id, pulse, bp, temp, resp_rate, ht, wt];
+            values = [this.visit_id, pulse, bp, temp, resp_rate, ht, wt];
         } else {
             text = `
             UPDATE public."visit"
