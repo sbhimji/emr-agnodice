@@ -244,12 +244,30 @@ app.post('/newHPI', async (req, res) => {
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 
+app.post('/medHist', async (req, res) => {
+    let patientData = new PatientWithID(req.query.patient_id);
+    await patientData.getById();
+    let visitData = new Visit(req.query.visit_id, null, null, null, null);
+    await visitData.getById(req.query.visit_id);
+    await patientData.addMedHist(req.body.condition, req.body.year, req.body.meds, req.body.dose);
+
+    res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
+})
+
 app.get('/newHPI', async (req, res) => {
     let patientData = new PatientWithID(req.query.patient_id);
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
     res.render('newHPI.ejs', {patient: patientData, visit: visitData, title: 'Add HPI'});
+})
+
+app.get('/medHist', async (req, res) => {
+    let patientData = new PatientWithID(req.query.patient_id);
+    await patientData.getById();
+    let visitData = new Visit(req.query.visit_id, null, null, null, null);
+    await visitData.getById(req.query.visit_id);
+    res.render('medHist.ejs', {patient: patientData, visit: visitData, title: 'Update Medical History'});
 })
 
 app.post('/newSocial', async (req, res) => {
@@ -270,7 +288,15 @@ app.post('/newAssessment', async (req, res) => {
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
     await visitData.addAssessment(req.body.health, req.body.diff);
-    res.redirect('/newMDM?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
+    res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
+})
+
+app.get('/newAssessment', async (req, res) => {
+    let patientData = new PatientWithID(req.query.patient_id);
+    await patientData.getById();
+    let visitData = new Visit(req.query.visit_id, null, null, null, null);
+    await visitData.getById(req.query.visit_id);
+    res.render('newAssessment.ejs', {patient: patientData, visit: visitData, title: 'Add Assessment'});
 })
 
 // app.post('/newMedicine', async (req, res) => {
@@ -284,7 +310,6 @@ app.post('/newMDM', async (req, res) => {
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
     await visitData.addMDM(req.body.thoughts, req.body.name, req.body.ref, req.body.plan, req.body.med);
-    console.log(visitData.phys_thoughts);
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 

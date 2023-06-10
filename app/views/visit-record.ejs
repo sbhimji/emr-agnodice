@@ -27,6 +27,28 @@
         </div>
     </div>
 
+    <label for "div1" class = "infoLabel"><a href = "/medHist?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Medical History</a></label>
+    <div class ="genInfo2" id = "div1">
+        <div>
+            <table class="center" id="medHist" name="medHist" style = "width:77%">
+                <tr>
+                  <th>Condition</th>
+                  <th>Year Occurred</th>
+                  <th>Medications</th>
+                  <th>Dose and Frequency</th>
+                </tr>
+                <% patient.medicalHist.forEach(function(hist) { %>
+                  <tr>
+                    <td><%= hist[0] %></td>
+                    <td><%= hist[1] %></td>
+                    <td><%= hist[2] %></td>
+                    <td><%= hist[3] %></td>
+                  </tr>
+                <% }) %>
+            </table>
+        </div>
+    </div>
+
     <label for "divz" class = "infoLabel"><a href = "/newSocial?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Social History</a></label>
     <div class ="genInfo2" id = "divz">
         <% if (visit.soc_added === null || visit.soc_added === "false") {%>
@@ -194,35 +216,22 @@
             <span>Medicines Prescribed:  <%= visit.med_presc %></span>
             <span>Assessment:</span>
         </div>
-        
-    <div id = "div6">
+
+    </div>
+
+    <label for "div5" class = "infoLabel"><a href = "/newAssessment?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Assessments</a></label>
+    <div class ="genInfo2" id = "div5">
         <table class = "center" id = "queryTable" name = "assessment" style = "width:77%">
             <tr>
               <th>Health Issue</th>
               <th>Diff</th>
             </tr>
-            <%
-            var x = 0;
-            if (visit.diffs === null || visit.diffs === undefined) {
-                x = 0;
-            } else {
-                x = visit.diffs.length;
-            }
-            %> 
-            <% for (var i = 0; i < x; i++) { %> 
+            <% visit.assessments.forEach(function(assessment) { %>
                 <tr>
-                  <td><%= visit.health_iss[i] %></td>
-                  <td><%= visit.diffs[i] %></td>
+                  <td><%= assessment[0] %></td>
+                  <td><%= assessment[1] %></td>
                   </tr>
-              <% } %> 
-                </table>
+              <% }) %> 
+        </table>
     </div>
-    </div>
-
-    
-    
-    
-    
-    
-    
 </body>

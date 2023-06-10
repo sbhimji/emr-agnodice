@@ -1,0 +1,19 @@
+<head>
+    <title>Home</title>
+    <link rel = "stylesheet" type = "text/css" href = "style/newMDM.css" />
+  </head>
+
+<h2 class = "link"><a href = "/home">Home</a></h2> 
+<h3 class = "topright"><a href = "/">Logout</a></h3>
+<h2 class = "link"><a href = "/visit-record?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Back to visit</a></h2>
+<h1>Add MDM</h1> 
+
+<form action ="/newAssessment?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
+    <div>
+        <label for = "health">Health Issue</label>
+        <input type="text" id = "health" name = "health" required>
+        <label for = "diff">Differential</label>
+        <input type="text" id = "diff" name = "diff">
+    </div>
+    <button type = "submit">Add Assessment</button>
+</form>

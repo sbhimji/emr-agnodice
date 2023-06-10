@@ -25,9 +25,7 @@ tr, td {
 th {
     border: 1px solid black;
     border-collapse: collapse;
-    /* background-color:rgb(34,139,34); */
     background-color: rgb(255, 213, 128);
-    /* background-color: rgb(144,238,144); */
 }
 
 .topright {

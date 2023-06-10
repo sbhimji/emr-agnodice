@@ -193,6 +193,18 @@ class Patient {
         .query(text2, values2)
         .catch((err) => console.log('Error executing query', err.stack))
     }
+
+    async addMedHist(condition, yr_occ, medications, dose) {
+        const text = `
+            INSERT INTO public."med-hist"
+            VALUES ($1, $2, $3, $4, $5)
+            `;
+        const values = [this.patient_id, condition, yr_occ, medications, dose];
+        await pool
+            .query(text, values)
+            .then((res) => {})
+            .catch((err) => console.log('Error executing query', err.stack))
+    };
 }
 
 module.exports = Patient;

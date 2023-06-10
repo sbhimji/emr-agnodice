@@ -35,6 +35,7 @@ class PatientWithID {
     this.siblings = null;
     this.children = null;
     this.sig_other = null;
+    this.medicalHist = [];
   }
 
   async getById() {
@@ -78,6 +79,19 @@ class PatientWithID {
         this.sig_other = res.rows[0].fam_sig_other;
       })
       .catch((err) => console.error('Error executing query', err.stack));
+
+      const text2 = `
+      SELECT * FROM public."med-hist"
+      WHERE patient_id = $1
+      `;
+      await pool
+      .query(text2, values)
+      .then(async (res) => {
+        await Promise.all(res.rows.map(async (row) => {
+          await this.medicalHist.push([row.condition_, row.yr_occured, row.medications, row.dose_and_freq]);
+        }));
+      })
+      .catch((err) => console.error('Error executing query', err.stack));
   }
 
   async getVisits() {
@@ -91,7 +105,6 @@ class PatientWithID {
       .then(async (res) => {
         await Promise.all(res.rows.map(async (row) => {
           const visit1 = new Visit(row.visit_id, null, null, null, null);
-          //await visit1.initializeDataById();
           await visit1.getById(row.visit_id);
           await this.visits.push(visit1);
         }));
@@ -105,9 +118,6 @@ class PatientWithID {
   }
 
   async addVisit(event, date, physician, consent) {
-    //const visit = new Visit(null, this.patient_id, event, date, physician);
-    
-
     const text = `
         INSERT INTO public."visit" (
             patient_id, event_name, visit_date, attending_physician, consent
@@ -220,7 +230,19 @@ async addFamily(mother, father, siblings, children, sig_other, visit_id) {
   await pool
   .query(text2, values2)
   .catch((err) => console.log('Error executing query', err.stack))
-}
+  }
+
+  async addMedHist(condition, yr_occ, medications, dose) {
+    const text = `
+        INSERT INTO public."med-hist"
+        VALUES ($1, $2, $3, $4, $5)
+        `;
+    const values = [this.patient_id, condition, yr_occ, medications, dose];
+    await pool
+        .query(text, values)
+        .then((res) => {})
+        .catch((err) => console.log('Error executing query', err.stack))
+  };
 }
 
 module.exports = PatientWithID;

@@ -50,8 +50,7 @@ class Visit {
         this.reff = null;
         this.patient_agreement = null;
         this.med_presc = null;
-        this.health_iss = [];
-        this.diffs = [];
+        this.assessments = [];
         this.occupation = null;
         this.diet = null;
         this.exercise = null;
@@ -188,12 +187,11 @@ class Visit {
         `;
         await pool
             .query(text3, values)
-            .then((res) => {
-                if (res.rowCount > 0) {
-                    this.health_iss.push(res.rows[0].health_issue);
-                    this.diffs.push(res.rows[0].Differential);
-                }
-            })
+            .then(async (res) => {
+                await Promise.all(res.rows.map(async (row) => {
+                  await this.assessments.push([row.health_issue, row.Differential]);
+                }));
+              })
             .catch((err) => {
                 console.error('Error executing query', err.stack);
             });
@@ -346,10 +344,7 @@ class Visit {
         const values = [diff, this.visit_id, health_issue];
         await pool
             .query(text, values)
-            .then((res) => {
-                this.health_iss.push(health_issue)
-                this.diffs.push(diff);
-            })
+            .then((res) => {})
         .catch((err) => console.error('Error executing query', err.stack));
     }  
 
