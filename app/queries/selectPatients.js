@@ -1,4 +1,4 @@
-const pool = require('/Users/saim_bhimji/repo/emr2/database/db.js');
+const pool = require('../../database/db.js');
 
 
 module.exports = function() {
