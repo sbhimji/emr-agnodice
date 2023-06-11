@@ -51,11 +51,12 @@ app.post('/login', async (req, response) => {
     SELECT * FROM public."Users"
     WHERE username = $1
     `;
-    // const text = `
-    //     INSERT INTO public."login"(
-    //         date, username)
-    //         VALUES ($1, $2);
-    //     `
+    const values2 = [date, req.body.username];
+    const text2 = `
+        INSERT INTO public."login"(
+            date, username)
+            VALUES ($1, $2);
+        `
     const values = [req.body.username];
     await pool            
         .query(text, values)
@@ -65,7 +66,6 @@ app.post('/login', async (req, response) => {
                 //response.redirect('/');
             } else {
                 if ((req.body.password).localeCompare(res.rows[0].password) === 0) {
-                    console.log("Login attempt logged successfully.")
                     response.redirect('/home');
                 } else {
                     response.render('login.ejs', {str : "Incorrect username/password."});
@@ -74,6 +74,12 @@ app.post('/login', async (req, response) => {
                 }
             }
             
+        })
+        .catch((err) => console.log("ERROR", err.stack))
+    await pool            
+        .query(text2, values2)
+        .then((res) => {
+            console.log("Login attempt logged successfully.")
         })
         .catch((err) => console.log("ERROR", err.stack))
     
@@ -214,10 +220,10 @@ app.post('/newROS', async (req, res) => {
 })
 
 app.post('/newPhys', async (req, res) => {
-    let vals = [req.body.gen_norm, req.body.gen_ab, req.body.heart_norm, req.body.heart_ab, 
+    let vals = [req.body.gen_norm, req.body.gen_ab, req.body.heart_norm, req.body.heart_ab,
         req.body.lung_norm, req.body.lung_ab, req.body.skin_norm, req.body.skin_ab, req.body.heent_norm, req.body.heent_ab,
-        req.body.abdo_norm, req.body.abdo_ab, req.body.mus_norm, req.body.mus_ab, req.body.neuro_norm, req.body.neuro_ab, req.body.omm_norm, req.body.omm_ab, 
-        req.body.phys_oth_norm, req.body.phys_oth_ab];
+        req.body.abdo_norm, req.body.abdo_ab, req.body.mus_norm,  req.body.mus_ab, req.body.neuro_norm, req.body.neuro_ab,
+        req.body.omm_norm, req.body.omm_ab, req.body.phys_oth_norm, req.body.phys_oth_ab];
     vals.forEach(await function(val) {
         if (val === null) {
             val = "";

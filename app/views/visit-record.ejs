@@ -153,6 +153,9 @@
     <div class ="genInfo2" id = "div4">
         <div>
             <label for "1">General Survey</label>
+            <% if(visit.phys_gen_norm !== null && visit.phys_gen_norm.includes("Within")) { %>
+                <span>Within Normal Limits</span>
+            <% } %>
             <div id = "1" class = "norm_ab">
                 <span>Normal Findings: <%= visit.phys_gen_norm %></span>
                 <span>Abnormal Findings: <%= visit.phys_gen_ab %></span>
@@ -213,7 +216,7 @@
             <span>Plan of Care: <%= visit.phys_thoughts %></span>
             <span>Refferals: <%= visit.reff %></span>
             <span>Patient Agrees to Plan:  <%= visit.patient_agreement %></span>
-            <span>Medicines Prescribed:  <%= visit.med_presc %></span>
+            <span>Medications Prescribed:  <%= visit.med_presc %></span>
             <span>Assessment:</span>
         </div>
 
