@@ -170,6 +170,7 @@ class Visit {
                 this.father = res.rows[0].fam_father;
                 this.siblings = res.rows[0].fam_siblings;
                 this.children = res.rows[0].fam_children;
+                this.sig_other = res.rows[0].fam_sig_other;
                 this.fun_drugs = res.rows[0].fun_drugs;
                 this.sex_act = res.rows[0].sex_active;
                 this.partners = res.rows[0].last_year_part;

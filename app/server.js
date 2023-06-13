@@ -277,13 +277,22 @@ app.get('/medHist', async (req, res) => {
 })
 
 app.post('/newSocial', async (req, res) => {
+    pkday = parseInt(req.body.pkday);
+    yrs = parseInt(req.body.yrs);
+    alc = parseInt(req.body.alc);
+
+    if (req.body.pkday === "" || req.body.yrs === "" || req.body.alc === "") {
+        pkday = 0;
+        yrs = 0;
+        alc = 0;
+    }
     let patientData = new PatientWithID(req.query.patient_id);
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    let packs_yr = parseInt(req.body.pkday) * parseInt(req.body.yrs);
+    let packs_yr = pkday * yrs;
     await patientData.addSocial(req.body.occupation,req.body.diet, req.body.exercise, req.body.curr_hous, req.body.yr3_hous, 
-        req.body.caffeine, req.body.alc, req.body.pkday, req.body.yrs, packs_yr, req.body.quit, req.body.marijuana, req.body.fundr, req.body.sex_act, 
+        req.body.caffeine, alc, pkday, yrs, packs_yr, req.body.quit, req.body.marijuana, req.body.fundr, req.body.sex_act, 
         req.body.partners, req.body.protection, req.body.sti, req.query.visit_id);
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
@@ -326,6 +335,25 @@ app.post('/newFamily', async (req, res) => {
     await visitData.getById(req.query.visit_id);
     await patientData.addFamily(req.body.mother, req.body.father, req.body.siblings, req.body.children, req.body.sig_other, req.query.visit_id);
     res.redirect('/visit-record?patient_id=' + patientData.patient_id + '&visit_id=' + visitData.visit_id);
+})
+
+app.get('/register', async (req, res) => {
+    res.render('register.ejs')
+})
+
+app.post('/register', async (req, res) => {
+    const text = `
+    INSERT INTO public."Users"
+    VALUES($1, $2, $3, $4, $5)
+    `
+    const values = [req.body.fname, req.body.lname, req.body.user, req.body.pass, req.body.email];
+    await pool
+      .query(text, values)
+      .then(async (res) => {
+        console.log("User Added.")
+      })
+      .catch((err) => console.error('Error executing query', err.stack));
+    res.redirect('/');
 })
 
 
