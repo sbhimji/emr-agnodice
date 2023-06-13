@@ -1,0 +1,29 @@
+<head>
+    <link rel = "stylesheet" type = "text/css" href = "../../style/form.css" />
+</head>
+<body>
+    <h2 class = "link"><a href = "/home">Home</a></h2> 
+    <h3 class = "topright"><a href = "/">Logout</a></h3>
+<h2 class = "link"><a href = "/visit-record?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Back to visit</a></h2>
+<h1>Update Medical History</h1> 
+
+<form action ="/medHist?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
+    <div>
+        <label for = "condition">Condition</label>
+        <input type="text" id = "condition" name = "condition" maxlength = "40">
+    </div>
+    <div>
+        <label for = "year">Year</label>
+        <input type="number" id = "year" name = "year" maxlength = "40">
+    </div>
+    <div>
+        <label for = "meds">Medications</label>
+        <input type="text" id = "meds" name = "meds" maxlength = "40">
+    </div>
+    <div>
+        <label for = "dose">Dose and Frequency</label>
+        <input type="text" id = "dose" name = "dose" maxlength = "40">
+    </div>
+    <button type = "submit">Add Medical History</button>
+</form>
+</body>

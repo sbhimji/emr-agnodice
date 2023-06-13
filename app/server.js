@@ -1,12 +1,12 @@
 const express = require('express');
-const pool = require('../database/db.js');
+const pool = require('../database/db');
 const fs = require('fs');
-const Patient = require('../database/Patient.js');
-const PatientWithID = require('../database/PatientWithID.js');
+const PatientWithID = require('../libs/classes/PatientWithID.js');
 const { render } = require('ejs');
 const { builtinModules } = require('module');
 var bodyParser = require('body-parser');
-const Visit = require('../database/Visit.js');
+const Visit = require('../libs/classes/Visit.js');
+const path = require('path');
 const notifier = require('node-notifier');
 //const VisitWithID = require('../database/VisitWithID.js');
 
@@ -18,8 +18,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 const port = 3000;
 
+app.set('views', '../public/views');
 app.set('view_engine', 'ejs')
-app.use(express.static(__dirname + '/views'));
+app.use(express.static('../public'));
 app.use(express.urlencoded({ extended: false}))
 
 
@@ -37,9 +38,10 @@ app.post('/patient', async (req, res) => {
     }
     // let patientData = new Patient(req.body.fname, req.body.lname, req.body.sex, req.body.birth_year, 
     //     req.body.birth_month, req.body.birth_day, age, req.body.insurance, req.body.pcp);
-    let patientData = new Patient(req.body.fname, req.body.lname, req.body.sex, req.body.birthday,
-        age, req.body.insurance, req.body.pcp);
-    await patientData.initializeData();
+    let patientData = new PatientWithID(null);
+    await patientData.addPatient(req.body.fname, req.body.lname, req.body.sex, req.body.birthday, age, req.body.insurance, req.body.pcp);
+    await patientData.getPatientId();
+    //await patientData.initializeData();
     res.redirect('/patient-record?patient_id=' + patientData.patient_id);
 })
 
@@ -135,7 +137,7 @@ app.post('/searchPatient', async (req, res) => {
 })
 
 app.get('/home', async (req, res) => {
-    const query = require('../app/queries/selectPatients');
+    const query = require('../libs/misc-func/selectPatients');
     const patients = await query();
     //console.log(patients);
     res.render('home.ejs', { 
@@ -155,7 +157,7 @@ app.get('/patient-record', async (req, res) => {
         await patientData.initializeData();
         //await patientData.getById();
     }
-    await res.render('patient-record.ejs', { patient: patientData, title: 'Patient Record'})
+    await res.render('records/patient-record.ejs', { patient: patientData, title: 'Patient Record'})
 }) 
 
 app.get('/visit-record', async (req, res) => {
@@ -170,7 +172,7 @@ app.get('/visit-record', async (req, res) => {
         await visitData.getById(req.query.visit_id);
         console.log("Visit Record: " + req.query.visit_id);
     }
-    await res.render('visit-record.ejs', { visit: visitData, patient: patientData, title: 'Visit Record'})
+    await res.render('records/visit-record.ejs', { visit: visitData, patient: patientData, title: 'Visit Record'})
 }) 
 
 app.post('/visit', async (req, res) => {
@@ -181,7 +183,7 @@ app.post('/visit', async (req, res) => {
     //var visDate = req.body.year + '-' + req.body.month + '-' + req.body.day;
     await patientData.addVisit(req.body.eventName, req.body.visitDate, req.body.phys, req.body.consent);
 
-    await res.render('patient-record.ejs', { patient: patientData, title: 'Patient Record'})
+    await res.render('records/patient-record.ejs', { patient: patientData, title: 'Patient Record'})
 })
 
 app.post('/vitals', async (req, res) => {
@@ -199,7 +201,7 @@ app.post('/newROS', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    const updateText = require('../app/queries/updateROSText')
+    const updateText = require('../libs/misc-func/updateROSText')
     var ros_gen = await updateText([req.body.weight_loss, req.body.fatigue, req.body.sweats]);
     var ros_cardio = await updateText([req.body.chestPain, req.body.palp, req.body.sob]);
     var ros_resp = await updateText([req.body.coughing, req.body.wheez, req.body.phlegm, req.body.diff]); 
@@ -265,7 +267,7 @@ app.get('/newHPI', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    res.render('newHPI.ejs', {patient: patientData, visit: visitData, title: 'Add HPI'});
+    res.render('forms/visit/newHPI.ejs', {patient: patientData, visit: visitData, title: 'Add HPI'});
 })
 
 app.get('/medHist', async (req, res) => {
@@ -273,7 +275,7 @@ app.get('/medHist', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    res.render('medHist.ejs', {patient: patientData, visit: visitData, title: 'Update Medical History'});
+    res.render('forms/visit/medHist.ejs', {patient: patientData, visit: visitData, title: 'Update Medical History'});
 })
 
 app.post('/newSocial', async (req, res) => {
@@ -311,7 +313,7 @@ app.get('/newAssessment', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    res.render('newAssessment.ejs', {patient: patientData, visit: visitData, title: 'Add Assessment'});
+    res.render('forms/visit/newAssessment.ejs', {patient: patientData, visit: visitData, title: 'Add Assessment'});
 })
 
 // app.post('/newMedicine', async (req, res) => {
@@ -338,7 +340,7 @@ app.post('/newFamily', async (req, res) => {
 })
 
 app.get('/register', async (req, res) => {
-    res.render('register.ejs')
+    res.render('forms/register.ejs')
 })
 
 app.post('/register', async (req, res) => {
@@ -362,7 +364,7 @@ app.get('/newPhys', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    res.render('newPhys.ejs', {patient: patientData, visit: visitData, title: 'Add Physical Exam'})
+    res.render('forms/visit/newPhys.ejs', {patient: patientData, visit: visitData, title: 'Add Physical Exam'})
 })
 
 app.get('/newMDM', async (req, res) => {
@@ -370,7 +372,7 @@ app.get('/newMDM', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    res.render('newMDM.ejs', {patient: patientData, visit: visitData, title: 'Add MDM'})
+    res.render('forms/visit/newMDM.ejs', {patient: patientData, visit: visitData, title: 'Add MDM'})
 })
 
 
@@ -381,11 +383,11 @@ app.get('/newFamily', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    res.render('newFamily.ejs', {patient: patientData, visit: visitData, title: 'Add Family'})
+    res.render('forms/visit/newFamily.ejs', {patient: patientData, visit: visitData, title: 'Add Family'})
 })
 
 app.get('/newPatient', (req, res) => {
-    res.render('newPatient.ejs', {title: 'Add Patient'})
+    res.render('forms/newPatient.ejs', {title: 'Add Patient'})
 })
 
 app.get('/newSocial', async (req, res) => {
@@ -393,7 +395,7 @@ app.get('/newSocial', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    res.render('newSocial.ejs', {patient: patientData, visit: visitData, title: 'Add Social History'})
+    res.render('forms/visit/newSocial.ejs', {patient: patientData, visit: visitData, title: 'Add Social History'})
 })
 
 app.get('/newVitals', async (req, res) => {
@@ -401,13 +403,13 @@ app.get('/newVitals', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    res.render('newVitals.ejs', {visit: visitData, patient: patientData, title: 'Add Vitals'})
+    res.render('forms/visit/newVitals.ejs', {visit: visitData, patient: patientData, title: 'Add Vitals'})
 })
 
 app.get('/newVisit', async (req, res) => {
     let patientData = new PatientWithID(req.query.patient_id);
     await patientData.getById();
-    res.render('newVisit.ejs', {patient: patientData, title: 'Add Visit'})
+    res.render('forms/visit/newVisit.ejs', {patient: patientData, title: 'Add Visit'})
 })
 
 app.get('/newROS', async (req, res) => {
@@ -415,7 +417,7 @@ app.get('/newROS', async (req, res) => {
     await patientData.getById();
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
-    res.render('newROS.ejs', {patient: patientData, visit: visitData, title: 'Review of Systems'})
+    res.render('forms/visit/newROS.ejs', {patient: patientData, visit: visitData, title: 'Review of Systems'})
 })
 
 app.listen(port, () => {

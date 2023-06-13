@@ -1,0 +1,39 @@
+<head>
+    <link rel = "stylesheet" type = "text/css" href = "../../style/form.css" />
+</head>
+
+<h2 class = "link"><a href = "/home">Home</a></h2> 
+<h3 class = "topright"><a href = "/">Logout</a></h3>
+<h1>Add Patient</h1> 
+<form action ="/patient" method = 'POST'>
+    <div>
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" name="fname" pattern="^[A-Z][a-z]*$" maxlength="20" title="Please enter a valid name (first letter capitalized, no numbers/symbols)" required>
+    </div>
+    <div>
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" name="lname" pattern="^[A-Z][a-z]*$" maxlength="20" title="Please enter a valid name (first letter capitalized, no numbers/symbols)" required>
+    </div>
+    <div>
+        <label for = "sex">Sex</label>
+        <select id = "sex" name = "sex"  type = "text" required>
+            <option selected disabled hidden>Select Sex</option>
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+    </div>
+
+    <div>
+        <label for "birthday">Birthday</label>
+        <input type="date" id="birthday" name="birthday"  min="1907-01-01" max="<%= (new Date()).toISOString().split('T')[0] %>" required>
+    </div>
+    <div>
+        <label for = "insurance">Insurance</label>
+        <input type="text" id = "insurance" name = "insurance" maxlength = "30">
+    </div>
+    <div>
+        <label for = "pcp">PCP</label>
+        <input type="text" id = "pcp" name = "pcp" maxlength = "25">
+    </div>
+    <button type = "submit">Register</button>
+</form>

@@ -1,0 +1,33 @@
+<head>
+    <link rel = "stylesheet" type = "text/css" href =  "../../style/form.css" />
+</head>
+<body>
+    <h2 class = "link"><a href = "/home">Home</a></h2> 
+    <h3 class = "topright"><a href = "/">Logout</a></h3>
+<h2 class = "link"><a href = "/visit-record?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Back to visit</a></h2>
+<h1>Add Family History</h1> 
+
+<form action ="/newFamily?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
+    <div>
+        <label for = "mother">Mother</label>
+        <input type="text" id = "mother" name = "mother" maxlength = "40" value = "<%= patient.mother %>">
+    </div>
+    <div>
+        <label for = "father">Father</label>
+        <input type="text" id = "father" name = "father" maxlength = "40" value = "<%= patient.father %>">
+    </div>
+    <div>
+        <label for = "siblings">Siblings</label>
+        <input type="text" id = "siblings" name = "siblings" maxlength = "40" value = "<%= patient.siblings %>">
+    </div>
+    <div>
+        <label for = "children">Children</label>
+        <input type="text" id = "children" name = "children" maxlength = "40" value = "<%= patient.children %>">
+    </div>
+    <div>
+        <label for = "sig_other">Significant Other</label>
+        <input type="text" id = "sig_other" name = "sig_other" maxlength = "40" value = "<%= patient.sig_other %>">
+    </div>
+    <button type = "submit">Add Family History</button>
+</form>
+</body>
