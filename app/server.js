@@ -1,7 +1,7 @@
 const express = require('express');
 const pool = require('../database/db');
 const fs = require('fs');
-const PatientWithID = require('../libs/classes/PatientWithID.js');
+const PatientWithID = require('../libs/classes/Patient.js');
 const { render } = require('ejs');
 const { builtinModules } = require('module');
 var bodyParser = require('body-parser');
