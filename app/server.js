@@ -7,6 +7,7 @@ const { builtinModules } = require('module');
 var bodyParser = require('body-parser');
 const Visit = require('../libs/classes/Visit.js');
 const path = require('path');
+const bcrypt = require('bcrypt')
 const notifier = require('node-notifier');
 //const VisitWithID = require('../database/VisitWithID.js');
 
@@ -62,12 +63,13 @@ app.post('/login', async (req, response) => {
     const values = [req.body.username];
     await pool            
         .query(text, values)
-        .then((res) => {
+        .then(async (res) => {
             if (res.rowCount === 0) {
                 response.render('login.ejs', {str : "Incorrect username/password."});
                 //response.redirect('/');
             } else {
-                if ((req.body.password).localeCompare(res.rows[0].password) === 0) {
+                const match = await bcrypt.compare(req.body.password, res.rows[0].password);
+                if (match) {
                     response.redirect('/home');
                 } else {
                     response.render('login.ejs', {str : "Incorrect username/password."});
@@ -348,7 +350,9 @@ app.post('/register', async (req, res) => {
     INSERT INTO public."Users"
     VALUES($1, $2, $3, $4, $5)
     `
-    const values = [req.body.fname, req.body.lname, req.body.user, req.body.pass, req.body.email];
+    const password = await bcrypt.hash(req.body.pass, 10)
+    console.log(password)
+    const values = [req.body.fname, req.body.lname, req.body.user, password, req.body.email];
     await pool
       .query(text, values)
       .then(async (res) => {
