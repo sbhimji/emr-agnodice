@@ -31,7 +31,19 @@ app.set('view_engine', 'ejs')
 app.use(express.static('../public'));
 app.use(express.urlencoded({ extended: false}))
 
-
+app.get('/', (req, res) => {
+    console.log(req.query.length);
+    if (Object.keys(req.query).length > 0 && req.query.str) {
+        res.render('login.ejs', {title: 'Login Page', str : req.query.str}); 
+    } else {
+        req.logout(function(err) {
+            if (err) { 
+                res.render('login.ejs', {title: 'Login Page', str : ""}); 
+            }
+            res.render('login.ejs', {title: 'Login Page', str : ""});
+        });
+    }
+}) 
 
 app.post('/patient', async (req, res) => {
     console.log(req.body.birthday);
@@ -54,7 +66,7 @@ app.post(
     "/login",
     passport.authenticate("local-login", { 
         successRedirect: '/home',
-        failureRedirect: '/',
+        failureRedirect: `/?str=Incorrect%20username%20or%20password`,
         session: true
     }),
     (req, res, next) => {
@@ -125,14 +137,7 @@ app.get('/home', async (req, res) => {
     
 })
 
-app.get('/', (req, res) => {
-    req.logout(function(err) {
-        if (err) { 
-            res.render('login.ejs', {title: 'Login Page', str : ""}); 
-        }
-        res.render('login.ejs', {title: 'Login Page', str : ""});
-    });
-}) 
+
 
 app.get('/patient-record', async (req, res) => {
     if (req.isAuthenticated()) {
@@ -350,21 +355,38 @@ app.get('/register', async (req, res) => {
     res.render('forms/register.ejs')
 })
 
-app.post('/register', async (req, res) => {
-    const text = `
-    INSERT INTO public."Users"
-    VALUES($1, $2, $3, $4, $5)
+app.post('/register', async (req, response) => {
+    const text0 = `
+    SELECT * FROM public."Users"
+    WHERE username = $1
     `
-    const password = await bcrypt.hash(req.body.pass, 10)
-    console.log(password)
-    const values = [req.body.fname, req.body.lname, req.body.user, password, req.body.email];
+    const values0 = [req.body.user];
     await pool
-      .query(text, values)
+      .query(text0, values0)
       .then(async (res) => {
-        console.log("User Added.")
+        if (res.rowCount === 0) {
+            const text = `
+            INSERT INTO public."Users"
+            VALUES($1, $2, $3, $4, $5)
+            `
+            const password = await bcrypt.hash(req.body.pass, 10)
+            console.log(password)
+            const values = [req.body.fname, req.body.lname, req.body.user, password, req.body.email];
+            await pool
+              .query(text, values)
+              .then(async (res) => {
+                console.log("User Added.")
+              })
+              .catch((err) => console.error('Error executing query', err.stack));
+            response.redirect('/');
+        } else {
+            response.redirect('/register');
+        }
       })
       .catch((err) => console.error('Error executing query', err.stack));
-    res.redirect('/');
+    
+
+   
 })
 
 
