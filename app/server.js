@@ -9,10 +9,17 @@ const Visit = require('../libs/classes/Visit.js');
 const path = require('path');
 const bcrypt = require('bcrypt')
 const notifier = require('node-notifier');
-//const VisitWithID = require('../database/VisitWithID.js');
-
+var session = require('express-session');
+var passport = require("passport");
+require("../config/passport")(passport);
 const app = express();
 
+
+const expressSession = require('express-session');
+app.use(expressSession({secret: 'mySecretKey'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(session({secret: 'keyboard cat'}))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -25,9 +32,9 @@ app.use(express.static('../public'));
 app.use(express.urlencoded({ extended: false}))
 
 
+
 app.post('/patient', async (req, res) => {
     console.log(req.body.birthday);
-    // let birthDate = req.body.birthday;
     const today = new Date();
     const birth = new Date(req.body.birthday);
 
@@ -37,57 +44,24 @@ app.post('/patient', async (req, res) => {
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
         age--;
     }
-    // let patientData = new Patient(req.body.fname, req.body.lname, req.body.sex, req.body.birth_year, 
-    //     req.body.birth_month, req.body.birth_day, age, req.body.insurance, req.body.pcp);
     let patientData = new PatientWithID(null);
     await patientData.addPatient(req.body.fname, req.body.lname, req.body.sex, req.body.birthday, age, req.body.insurance, req.body.pcp);
     await patientData.getPatientId();
-    //await patientData.initializeData();
     res.redirect('/patient-record?patient_id=' + patientData.patient_id);
 })
 
+app.post(
+    "/login",
+    passport.authenticate("local-login", { 
+        successRedirect: '/home',
+        failureRedirect: '/',
+        session: true
+    }),
+    (req, res, next) => {
+        res.json({ user: req.user });
+      }
+  );
 
-
-app.post('/login', async (req, response) => {
-    const date = new Date();
-    const text = `
-    SELECT * FROM public."Users"
-    WHERE username = $1
-    `;
-    const values2 = [date, req.body.username];
-    const text2 = `
-        INSERT INTO public."login"(
-            date, username)
-            VALUES ($1, $2);
-        `
-    const values = [req.body.username];
-    await pool            
-        .query(text, values)
-        .then(async (res) => {
-            if (res.rowCount === 0) {
-                response.render('login.ejs', {str : "Incorrect username/password."});
-                //response.redirect('/');
-            } else {
-                const match = await bcrypt.compare(req.body.password, res.rows[0].password);
-                if (match) {
-                    response.redirect('/home');
-                } else {
-                    response.render('login.ejs', {str : "Incorrect username/password."});
-                    //notifier.notify('Incorrect username/password.');
-                    //response.redirect('/');
-                }
-            }
-            
-        })
-        .catch((err) => console.log("ERROR", err.stack))
-    await pool            
-        .query(text2, values2)
-        .then((res) => {
-            console.log("Login attempt logged successfully.")
-        })
-        .catch((err) => console.log("ERROR", err.stack))
-    
-})
 
 app.post('/searchPatient', async (req, res) => {
 
@@ -141,40 +115,59 @@ app.post('/searchPatient', async (req, res) => {
 app.get('/home', async (req, res) => {
     const query = require('../libs/misc-func/selectPatients');
     const patients = await query();
-    //console.log(patients);
-    res.render('home.ejs', { 
-        patients 
-    })
+    if (req.isAuthenticated()) {
+        res.render('home.ejs', { 
+            patients 
+        })
+    } else{
+        res.redirect('/')
+    }
+    
 })
 
 app.get('/', (req, res) => {
-    res.render('login.ejs', {title: 'Login Page', str : ""});
+    req.logout(function(err) {
+        if (err) { 
+            res.render('login.ejs', {title: 'Login Page', str : ""}); 
+        }
+        res.render('login.ejs', {title: 'Login Page', str : ""});
+    });
 }) 
 
 app.get('/patient-record', async (req, res) => {
-    let patientData = null;
-    if (Object.keys(req.query).length > 0) {
-        console.log("Patient Record: " + req.query.patient_id);
-        patientData = new PatientWithID(req.query.patient_id);
-        await patientData.initializeData();
-        //await patientData.getById();
+    if (req.isAuthenticated()) {
+        let patientData = null;
+        if (Object.keys(req.query).length > 0) {
+            console.log("Patient Record: " + req.query.patient_id);
+            patientData = new PatientWithID(req.query.patient_id);
+            await patientData.initializeData();
+            //await patientData.getById();
+        }   
+        res.render('records/patient-record.ejs', { patient: patientData, title: 'Patient Record'})
+    } else{
+        res.redirect('/')
     }
-    await res.render('records/patient-record.ejs', { patient: patientData, title: 'Patient Record'})
+    
 }) 
 
 app.get('/visit-record', async (req, res) => {
-    let visitData;
-    let patientData;
-    if (Object.keys(req.query).length > 0) {
-        console.log("YO: " + req.query.patient_id);
-        patientData = new PatientWithID(req.query.patient_id);
-        await patientData.getById();
+    if (req.isAuthenticated()) {
+        let visitData;
+        let patientData;
+        if (Object.keys(req.query).length > 0) {
+            console.log("YO: " + req.query.patient_id);
+            patientData = new PatientWithID(req.query.patient_id);
+            await patientData.getById();
         
-        visitData = new Visit(req.query.visit_id, null, null, null, null);
-        await visitData.getById(req.query.visit_id);
-        console.log("Visit Record: " + req.query.visit_id);
+            visitData = new Visit(req.query.visit_id, null, null, null, null);
+            await visitData.getById(req.query.visit_id);
+            console.log("Visit Record: " + req.query.visit_id);
+        }
+        res.render('records/visit-record.ejs', { visit: visitData, patient: patientData, title: 'Visit Record'})
+    } else{
+        res.redirect('/')
     }
-    await res.render('records/visit-record.ejs', { visit: visitData, patient: patientData, title: 'Visit Record'})
+    
 }) 
 
 app.post('/visit', async (req, res) => {
@@ -265,19 +258,27 @@ app.post('/medHist', async (req, res) => {
 })
 
 app.get('/newHPI', async (req, res) => {
-    let patientData = new PatientWithID(req.query.patient_id);
-    await patientData.getById();
-    let visitData = new Visit(req.query.visit_id, null, null, null, null);
-    await visitData.getById(req.query.visit_id);
-    res.render('forms/visit/newHPI.ejs', {patient: patientData, visit: visitData, title: 'Add HPI'});
+    if (req.isAuthenticated()) {
+        let patientData = new PatientWithID(req.query.patient_id);
+        await patientData.getById();
+        let visitData = new Visit(req.query.visit_id, null, null, null, null);
+        await visitData.getById(req.query.visit_id);
+        res.render('forms/visit/newHPI.ejs', {patient: patientData, visit: visitData, title: 'Add HPI'});
+    } else{
+        res.redirect('/')
+    }
 })
 
 app.get('/medHist', async (req, res) => {
-    let patientData = new PatientWithID(req.query.patient_id);
-    await patientData.getById();
-    let visitData = new Visit(req.query.visit_id, null, null, null, null);
-    await visitData.getById(req.query.visit_id);
-    res.render('forms/visit/medHist.ejs', {patient: patientData, visit: visitData, title: 'Update Medical History'});
+    if (req.isAuthenticated()) {
+        let patientData = new PatientWithID(req.query.patient_id);
+        await patientData.getById();
+        let visitData = new Visit(req.query.visit_id, null, null, null, null);
+        await visitData.getById(req.query.visit_id);
+        res.render('forms/visit/medHist.ejs', {patient: patientData, visit: visitData, title: 'Update Medical History'});
+    } else{
+        res.redirect('/')
+    }
 })
 
 app.post('/newSocial', async (req, res) => {
@@ -311,11 +312,15 @@ app.post('/newAssessment', async (req, res) => {
 })
 
 app.get('/newAssessment', async (req, res) => {
-    let patientData = new PatientWithID(req.query.patient_id);
-    await patientData.getById();
-    let visitData = new Visit(req.query.visit_id, null, null, null, null);
-    await visitData.getById(req.query.visit_id);
-    res.render('forms/visit/newAssessment.ejs', {patient: patientData, visit: visitData, title: 'Add Assessment'});
+    if (req.isAuthenticated()) {
+        let patientData = new PatientWithID(req.query.patient_id);
+        await patientData.getById();
+        let visitData = new Visit(req.query.visit_id, null, null, null, null);
+        await visitData.getById(req.query.visit_id);
+        res.render('forms/visit/newAssessment.ejs', {patient: patientData, visit: visitData, title: 'Add Assessment'});
+    } else{
+        res.redirect('/')
+    }
 })
 
 // app.post('/newMedicine', async (req, res) => {
@@ -364,64 +369,100 @@ app.post('/register', async (req, res) => {
 
 
 app.get('/newPhys', async (req, res) => {
-    let patientData = new PatientWithID(req.query.patient_id);
-    await patientData.getById();
-    let visitData = new Visit(req.query.visit_id, null, null, null, null);
-    await visitData.getById(req.query.visit_id);
-    res.render('forms/visit/newPhys.ejs', {patient: patientData, visit: visitData, title: 'Add Physical Exam'})
+    if (req.isAuthenticated()) {
+        let patientData = new PatientWithID(req.query.patient_id);
+        await patientData.getById();
+        let visitData = new Visit(req.query.visit_id, null, null, null, null);
+        await visitData.getById(req.query.visit_id);
+        res.render('forms/visit/newPhys.ejs', {patient: patientData, visit: visitData, title: 'Add Physical Exam'})
+    } else{
+        res.redirect('/')
+    }
 })
 
 app.get('/newMDM', async (req, res) => {
-    let patientData = new PatientWithID(req.query.patient_id);
-    await patientData.getById();
-    let visitData = new Visit(req.query.visit_id, null, null, null, null);
-    await visitData.getById(req.query.visit_id);
-    res.render('forms/visit/newMDM.ejs', {patient: patientData, visit: visitData, title: 'Add MDM'})
+    if (req.isAuthenticated()) {
+        let patientData = new PatientWithID(req.query.patient_id);
+        await patientData.getById();
+        let visitData = new Visit(req.query.visit_id, null, null, null, null);
+        await visitData.getById(req.query.visit_id);
+        res.render('forms/visit/newMDM.ejs', {patient: patientData, visit: visitData, title: 'Add MDM'})
+    } else{
+        res.redirect('/')
+    }
+   
 })
 
 
 
 
 app.get('/newFamily', async (req, res) => {
-    let patientData = new PatientWithID(req.query.patient_id);
-    await patientData.getById();
-    let visitData = new Visit(req.query.visit_id, null, null, null, null);
-    await visitData.getById(req.query.visit_id);
-    res.render('forms/visit/newFamily.ejs', {patient: patientData, visit: visitData, title: 'Add Family'})
+    if (req.isAuthenticated()) {
+        let patientData = new PatientWithID(req.query.patient_id);
+        await patientData.getById();
+        let visitData = new Visit(req.query.visit_id, null, null, null, null);
+        await visitData.getById(req.query.visit_id);
+        res.render('forms/visit/newFamily.ejs', {patient: patientData, visit: visitData, title: 'Add Family'})
+    } else{
+        res.redirect('/')
+    }
 })
 
 app.get('/newPatient', (req, res) => {
-    res.render('forms/newPatient.ejs', {title: 'Add Patient'})
+    if (req.isAuthenticated()) {
+        res.render('forms/newPatient.ejs', {title: 'Add Patient'})
+    } else{
+        res.redirect('/')
+    }
+    
 })
 
 app.get('/newSocial', async (req, res) => {
-    let patientData = new PatientWithID(req.query.patient_id);
-    await patientData.getById();
-    let visitData = new Visit(req.query.visit_id, null, null, null, null);
-    await visitData.getById(req.query.visit_id);
-    res.render('forms/visit/newSocial.ejs', {patient: patientData, visit: visitData, title: 'Add Social History'})
+    if (req.isAuthenticated()) {
+        let patientData = new PatientWithID(req.query.patient_id);
+        await patientData.getById();
+        let visitData = new Visit(req.query.visit_id, null, null, null, null);
+        await visitData.getById(req.query.visit_id);
+        res.render('forms/visit/newSocial.ejs', {patient: patientData, visit: visitData, title: 'Add Social History'})
+    } else{
+        res.redirect('/')
+    }
 })
 
 app.get('/newVitals', async (req, res) => {
-    let patientData = new PatientWithID(req.query.patient_id);
-    await patientData.getById();
-    let visitData = new Visit(req.query.visit_id, null, null, null, null);
-    await visitData.getById(req.query.visit_id);
-    res.render('forms/visit/newVitals.ejs', {visit: visitData, patient: patientData, title: 'Add Vitals'})
+    if (req.isAuthenticated()) {
+        let patientData = new PatientWithID(req.query.patient_id);
+        await patientData.getById();
+        let visitData = new Visit(req.query.visit_id, null, null, null, null);
+        await visitData.getById(req.query.visit_id);
+        res.render('forms/visit/newVitals.ejs', {visit: visitData, patient: patientData, title: 'Add Vitals'})
+    } else{
+        res.redirect('/')
+    }
+    
 })
 
 app.get('/newVisit', async (req, res) => {
-    let patientData = new PatientWithID(req.query.patient_id);
-    await patientData.getById();
-    res.render('forms/visit/newVisit.ejs', {patient: patientData, title: 'Add Visit'})
+    if (req.isAuthenticated()) {
+        let patientData = new PatientWithID(req.query.patient_id);
+        await patientData.getById();
+        res.render('forms/visit/newVisit.ejs', {patient: patientData, title: 'Add Visit'})
+    } else{
+        res.redirect('/')
+    }
+    
 })
 
 app.get('/newROS', async (req, res) => {
-    let patientData = new PatientWithID(req.query.patient_id);
-    await patientData.getById();
-    let visitData = new Visit(req.query.visit_id, null, null, null, null);
-    await visitData.getById(req.query.visit_id);
-    res.render('forms/visit/newROS.ejs', {patient: patientData, visit: visitData, title: 'Review of Systems'})
+    if (req.isAuthenticated()) {
+        let patientData = new PatientWithID(req.query.patient_id);
+        await patientData.getById();
+        let visitData = new Visit(req.query.visit_id, null, null, null, null);
+        await visitData.getById(req.query.visit_id);
+        res.render('forms/visit/newROS.ejs', {patient: patientData, visit: visitData, title: 'Review of Systems'})
+    } else{
+        res.redirect('/')
+    }
 })
 
 app.listen(port, () => {

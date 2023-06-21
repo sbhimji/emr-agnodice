@@ -20,8 +20,3 @@ const pool = new Pool({
 
 
 module.exports = pool;
-
-// pool.query('SELECT NOW()', (err, res) => {
-//   console.log(err, res)
-//   pool.end()
-// })
