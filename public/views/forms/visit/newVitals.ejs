@@ -4,7 +4,10 @@
 
 <h2 class = "link"><a href = "/home">Home</a></h2> 
 <h2 class = "link"><a href = "/visit-record?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Back to visit</a></h2>
-<h3 class = "topright"><a href = "/">Logout</a></h3>
+<div class = "topright">
+    <h3><a href = "/">Logout</a></h3>
+    <h3><a href = "/user">User</a></h3>
+</div>
 <h1>Add Vitals</h1> 
 <form action ="/vitals?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
     <div>

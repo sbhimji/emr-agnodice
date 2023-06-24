@@ -2,7 +2,10 @@
     <link rel = "stylesheet" type = "text/css" href =  "../../style/form.css" />
 </head>
 <body>
-    <h3 class = "topright"><a href = "/">Login</a></h3>
+    <div class = "topright">
+        <h3><a href = "/">Logout</a></h3>
+        <h3><a href = "/user">User</a></h3>
+    </div>
 
     <form action ="/register" method = 'POST'>
         <div>
@@ -20,6 +23,14 @@
         <div>
             <label for = "pass">Password</label>
             <input type="password" id="pass" name="pass" minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])(?=.*[a-zA-Z0-9]).{8,}$" title = "Password must be between 8-20 characters and must contain at least one letter, one number, and one special character" required>
+        </div>
+        <div>
+            <label for = "role">User Role</label>
+            <select id = "role" name = "role"  type = "text" required>
+                <option selected disabled hidden>Select Role</option>
+                <option>admin</option>
+                <option>clinician</option>
+            </select>
         </div>
         <div>
             <label for = "email">Email</label>

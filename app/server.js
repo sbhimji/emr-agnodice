@@ -13,6 +13,7 @@ var session = require('express-session');
 var passport = require("passport");
 require("../config/passport")(passport);
 const app = express();
+const User = require('../libs/classes/User.js')
 
 
 const expressSession = require('express-session');
@@ -32,9 +33,8 @@ app.use(express.static('../public'));
 app.use(express.urlencoded({ extended: false}))
 
 app.get('/', (req, res) => {
-    console.log(req.query.length);
     if (Object.keys(req.query).length > 0 && req.query.str) {
-        res.render('login.ejs', {title: 'Login Page', str : req.query.str}); 
+        res.render('login.ejs', {title: 'Login Page', str : 'Incorrect username or password'}); 
     } else {
         req.logout(function(err) {
             if (err) { 
@@ -66,12 +66,12 @@ app.post(
     "/login",
     passport.authenticate("local-login", { 
         successRedirect: '/home',
-        failureRedirect: `/?str=Incorrect%20username%20or%20password`,
+        failureRedirect: `/?str=true`,
         session: true
     }),
     (req, res, next) => {
         res.json({ user: req.user });
-      }
+    }
   );
 
 
@@ -136,6 +136,18 @@ app.get('/home', async (req, res) => {
     }
     
 })
+
+app.get('/user', async (req, res) => {
+    if (req.isAuthenticated()) {
+        const user = req.user;
+        res.render('records/user.ejs', { user: user, title: "User Record"})
+    } else{
+        res.redirect('/')
+    }
+    
+})
+
+
 
 
 
@@ -352,7 +364,41 @@ app.post('/newFamily', async (req, res) => {
 })
 
 app.get('/register', async (req, res) => {
-    res.render('forms/register.ejs')
+    if (req.isAuthenticated()) {
+        const user = req.user;
+        if (user.role === "admin") {
+            res.render('forms/register.ejs')
+        }
+    } else {
+        res.redirect('/')
+    }
+})
+
+app.get('/changePassword', async (req, res) => {
+    if (req.isAuthenticated()) {
+        const user = req.user;
+        res.render('forms/changePassword.ejs', {user: user})
+    } else {
+        res.redirect('/')
+    }
+})
+
+app.post('/change-pass', async (req, res) => {
+    const user = req.user;
+    const text = `
+        UPDATE public."Users"
+        SET password = $1
+        WHERE username = $2
+      `;
+      const password = await bcrypt.hash(req.body.pass, 10)
+      const values = [password, user.username];
+      await pool
+        .query(text, values)
+        .then((res) => {
+          console.log("Password changed.")
+        })
+        .catch((err) => console.error('Error executing query', err.stack));
+    res.redirect('/')
 })
 
 app.post('/register', async (req, response) => {
@@ -367,11 +413,11 @@ app.post('/register', async (req, response) => {
         if (res.rowCount === 0) {
             const text = `
             INSERT INTO public."Users"
-            VALUES($1, $2, $3, $4, $5)
+            VALUES($1, $2, $3, $4, $5, $6)
             `
             const password = await bcrypt.hash(req.body.pass, 10)
             console.log(password)
-            const values = [req.body.fname, req.body.lname, req.body.user, password, req.body.email];
+            const values = [req.body.fname, req.body.lname, req.body.user, password, req.body.email, req.body.role];
             await pool
               .query(text, values)
               .then(async (res) => {

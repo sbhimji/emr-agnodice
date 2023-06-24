@@ -1,12 +1,15 @@
 <head>
     <title> <%= title %></title>
-    <link rel = "stylesheet" type = "text/css" href = "../../style/patient-record.css" />
+    <link rel = "stylesheet" type = "text/css" href = "../../style/record.css" />
 </head>
 <body style = "background-color:rgb(242, 246, 216)">
     
     <h2 class = "topleft"><a href = "/home">Home</a></h2> 
     
-    <h3 class = "topright"><a href = "/">Logout</a></h3>
+    <div class = "topright">
+        <h3><a href = "/">Logout</a></h3>
+        <h3><a href = "/user">User</a></h3>
+    </div>
     <div class = "patient">
         <img src="../img/guest.jpg" alt="Patient" width="140" height="140" class = "guest">
         <h1 class = "name">Patient: <%= patient.fName %> <%= patient.lName %></h1>

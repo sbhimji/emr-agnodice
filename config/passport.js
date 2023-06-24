@@ -1,6 +1,7 @@
 const LocalStrategy = require("passport-local");
 const pool = require('../database/db');
 const bcrypt = require('bcrypt')
+const User = require('../libs/classes/User.js')
 module.exports = (passport) => {
     passport.use(
       "local-login",
@@ -23,7 +24,9 @@ module.exports = (passport) => {
                     } else {
                         const match = await bcrypt.compare(password, res.rows[0].password);
                         if (match) {
-                            return done(null, {username: res.rows[0].username});
+                            const user = new User(username);
+                            await user.getByUsername();
+                            return done(null, user);
                             //response.redirect('/home');
                         } else {
                             return done(null, false);

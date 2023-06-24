@@ -30,9 +30,11 @@ th {
 
 .topright {
   position: absolute;
+  text-align: center;
   top: 2px;
   right: 16px;
   font-size: 18px;
+  margin-top: -10px;
 }
 
 .topleft {

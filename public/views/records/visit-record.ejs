@@ -5,7 +5,10 @@
 <body style = "background-color:rgb(242, 246, 216)">
     <div>
     <h2 class = "link"><a href = "/home">Home</a></h2> 
-    <h3 class = "topright"><a href = "/">Logout</a></h3>
+    <div class = "topright">
+        <h3><a href = "/">Logout</a></h3>
+        <h3><a href = "/user">User</a></h3>
+    </div>
     <h1><a href = "/patient-record?patient_id=<%= patient.patient_id %>" class = "label">Patient: <%= patient.fName %> <%= patient.lName %></a></h1>
     </div>
     

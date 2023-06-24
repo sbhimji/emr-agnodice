@@ -1,0 +1,39 @@
+<head>
+    <title> <%= title %></title>
+    <link rel = "stylesheet" type = "text/css" href = "../../style/record.css" />
+</head>
+<body style = "background-color:rgb(242, 246, 216)">
+    
+    <h2 class = "topleft"><a href = "/home">Home</a></h2> 
+    
+    <div class = "topright">
+        <h3><a href = "/">Logout</a></h3>
+        <h3><a href = "/user">User</a></h3>
+    </div>
+    <div class = "patient">
+        <img src="../img/guest.jpg" alt="Patient" width="140" height="140" class = "guest">
+        <h1 class = "name">User: <%= user.username %></h1>
+    </div>
+
+    <div class ="genInfo" id = "div1">
+        <div>
+            <label for "div1" class = "label"><u>User Info</u></label>
+            <span class = "info">First Name: <%= user.fname %></span>
+            <span class = "info">Last Name: <%= user.lname %></span>
+            <span class = "info">Email: <%= user.email %></span>
+            <span class = "info">Role: <%= user.role %></span>
+        </div>
+    </div>
+
+    
+    <div class ="genInfo" id = "div1">
+        <div>
+            <span class = "info"><a href = "/changePassword">Change Password</a></span>
+            <% if (user.role === "admin") {%>
+                <span class = "info"><a href = "/register">Register New User</a></span>
+            <% } %>
+        </div>
+    </div>
+    
+
+</body>
