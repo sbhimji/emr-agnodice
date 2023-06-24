@@ -14,6 +14,7 @@ var passport = require("passport");
 require("../config/passport")(passport);
 const app = express();
 const User = require('../libs/classes/User.js')
+const addAudit = require('../libs/misc-func/addAudit');
 
 
 const expressSession = require('express-session');
@@ -59,6 +60,8 @@ app.post('/patient', async (req, res) => {
     let patientData = new PatientWithID(null);
     await patientData.addPatient(req.body.fname, req.body.lname, req.body.sex, req.body.birthday, age, req.body.insurance, req.body.pcp);
     await patientData.getPatientId();
+
+    await addAudit(req.user.username, "Add", patientData.patient_id, null, (req.user.fname + " " + req.user.lname + " added patient: " + req.body.fname + " " + req.body.lname))
     res.redirect('/patient-record?patient_id=' + patientData.patient_id);
 })
 
@@ -72,7 +75,7 @@ app.post(
     (req, res, next) => {
         res.json({ user: req.user });
     }
-  );
+);
 
 
 app.post('/searchPatient', async (req, res) => {
@@ -158,6 +161,7 @@ app.get('/patient-record', async (req, res) => {
             console.log("Patient Record: " + req.query.patient_id);
             patientData = new PatientWithID(req.query.patient_id);
             await patientData.initializeData();
+            await addAudit(req.user.username, "Accessed", patientData.patient_id, null, (req.user.fname + " " + req.user.lname + ": accessed patient record" + req.query.patient_id))
             //await patientData.getById();
         }   
         res.render('records/patient-record.ejs', { patient: patientData, title: 'Patient Record'})
@@ -178,6 +182,8 @@ app.get('/visit-record', async (req, res) => {
         
             visitData = new Visit(req.query.visit_id, null, null, null, null);
             await visitData.getById(req.query.visit_id);
+            
+            await addAudit(req.user.username, "Accessed", req.query.patient_id, req.query.visit_id, (req.user.fname + " " + req.user.lname + ": accessed visit record " + req.query.visit_id))
             console.log("Visit Record: " + req.query.visit_id);
         }
         res.render('records/visit-record.ejs', { visit: visitData, patient: patientData, title: 'Visit Record'})
@@ -195,6 +201,9 @@ app.post('/visit', async (req, res) => {
     //var visDate = req.body.year + '-' + req.body.month + '-' + req.body.day;
     await patientData.addVisit(req.body.eventName, req.body.visitDate, req.body.phys, req.body.consent);
 
+    let visitData = new Visit(null, req.body.eventName, req.body.visitDate, req.body.phys, req.body.consent);
+    await visitData.getVisitId();
+    await addAudit(req.user.username, "Added", req.query.patient_id, visitData.visit_id, (req.user.fname + " " + req.user.lname + ": added visit record " + visitData.visit_id))
     await res.render('records/patient-record.ejs', { patient: patientData, title: 'Patient Record'})
 })
 
@@ -205,6 +214,7 @@ app.post('/vitals', async (req, res) => {
     await visitData.getById(req.query.visit_id);
     await visitData.addVitals(req.body.pulse, req.body.bp, req.body.temp, req.body.r_rate,
         req.body.height, req.body.weight, req.body.blood_sug, req.body.hrs_meal);
+    await addAudit(req.user.username, "Added", req.query.patient_id, req.query.visit_id, (req.user.fname + " " + req.user.lname + ": added vitals to visit-record " + req.query.visit_id))
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 
@@ -230,6 +240,7 @@ app.post('/newROS', async (req, res) => {
         ros_gu = await updateText([req.body.lmp, req.body.regular,  req.body.tamp, req.body.breast, req.body.vag, req.body.dysuria2, req.body.tes, req.body.hernias]);
     }
     await visitData.addROS(ros_gen, ros_cardio, ros_resp, ros_skin, ros_heent, ros_gi, ros_gu, ros_mus, ros_endo);
+    await addAudit(req.user.username, "Added", req.query.patient_id, req.query.visit_id, (req.user.fname + " " + req.user.lname + ": added ROS to visit-record " + req.query.visit_id))
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 
@@ -251,6 +262,7 @@ app.post('/newPhys', async (req, res) => {
         req.body.lung_norm, req.body.lung_ab, req.body.skin_norm, req.body.skin_ab, req.body.heent_norm, req.body.heent_ab,
         req.body.abdo_norm, req.body.abdo_ab, req.body.mus_norm, req.body.mus_ab, req.body.neuro_norm, req.body.neuro_ab, req.body.omm_norm, req.body.omm_ab, 
         req.body.phys_oth_norm, req.body.phys_oth_ab);
+    await addAudit(req.user.username, "Added", req.query.patient_id, req.query.visit_id, (req.user.fname + " " + req.user.lname + ": added phys-exam to visit-record " + req.query.visit_id))
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 
@@ -260,7 +272,7 @@ app.post('/newHPI', async (req, res) => {
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
     await visitData.addHPI(req.body.hpi);
-
+    await addAudit(req.user.username, "Added", req.query.patient_id, req.query.visit_id, (req.user.fname + " " + req.user.lname + ": added HPI to visit-record " + req.query.visit_id))
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 
@@ -270,7 +282,7 @@ app.post('/medHist', async (req, res) => {
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
     await patientData.addMedHist(req.body.condition, req.body.year, req.body.meds, req.body.dose);
-
+    await addAudit(req.user.username, "Added", req.query.patient_id, req.query.visit_id, (req.user.fname + " " + req.user.lname + ": added medical-history to visit-record " + req.query.visit_id))
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 
@@ -316,6 +328,7 @@ app.post('/newSocial', async (req, res) => {
     await patientData.addSocial(req.body.occupation,req.body.diet, req.body.exercise, req.body.curr_hous, req.body.yr3_hous, 
         req.body.caffeine, alc, pkday, yrs, packs_yr, req.body.quit, req.body.marijuana, req.body.fundr, req.body.sex_act, 
         req.body.partners, req.body.protection, req.body.sti, req.query.visit_id);
+    await addAudit(req.user.username, "Added", req.query.patient_id, req.query.visit_id, (req.user.fname + " " + req.user.lname + ": added social-history to visit-record " + req.query.visit_id))
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 
@@ -325,6 +338,7 @@ app.post('/newAssessment', async (req, res) => {
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
     await visitData.addAssessment(req.body.health, req.body.diff);
+    await addAudit(req.user.username, "Added", req.query.patient_id, req.query.visit_id, (req.user.fname + " " + req.user.lname + ": added assessment to visit-record " + req.query.visit_id))
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 
@@ -351,6 +365,7 @@ app.post('/newMDM', async (req, res) => {
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
     await visitData.addMDM(req.body.thoughts, req.body.name, req.body.ref, req.body.plan, req.body.med);
+    await addAudit(req.user.username, "Added", req.query.patient_id, req.query.visit_id, (req.user.fname + " " + req.user.lname + ": added MDM to visit-record " + req.query.visit_id))
     res.redirect('/visit-record?patient_id=' + req.query.patient_id + '&visit_id=' + req.query.visit_id);
 })
 
@@ -360,6 +375,7 @@ app.post('/newFamily', async (req, res) => {
     let visitData = new Visit(req.query.visit_id, null, null, null, null);
     await visitData.getById(req.query.visit_id);
     await patientData.addFamily(req.body.mother, req.body.father, req.body.siblings, req.body.children, req.body.sig_other, req.query.visit_id);
+    await addAudit(req.user.username, "Added", req.query.patient_id, req.query.visit_id, (req.user.fname + " " + req.user.lname + ": added family-history to visit-record " + req.query.visit_id))
     res.redirect('/visit-record?patient_id=' + patientData.patient_id + '&visit_id=' + visitData.visit_id);
 })
 
@@ -398,6 +414,7 @@ app.post('/change-pass', async (req, res) => {
           console.log("Password changed.")
         })
         .catch((err) => console.error('Error executing query', err.stack));
+    
     res.redirect('/')
 })
 
@@ -422,6 +439,7 @@ app.post('/register', async (req, response) => {
               .query(text, values)
               .then(async (res) => {
                 console.log("User Added.")
+                await addAudit(req.user.username, "Added", null, null, (req.user.fname + " " + req.user.lname + ": added a new user "))
               })
               .catch((err) => console.error('Error executing query', err.stack));
             response.redirect('/');

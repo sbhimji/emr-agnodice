@@ -2,6 +2,7 @@ const LocalStrategy = require("passport-local");
 const pool = require('../database/db');
 const bcrypt = require('bcrypt')
 const User = require('../libs/classes/User.js')
+const addAudit = require('../libs/misc-func/addAudit');
 module.exports = (passport) => {
     passport.use(
       "local-login",
@@ -26,6 +27,7 @@ module.exports = (passport) => {
                         if (match) {
                             const user = new User(username);
                             await user.getByUsername();
+                            await addAudit(username, "Login", null, null, (user.fname + " " + user.lname + ": login occurred."))
                             return done(null, user);
                             //response.redirect('/home');
                         } else {
