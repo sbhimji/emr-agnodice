@@ -161,7 +161,7 @@ app.get('/patient-record', async (req, res) => {
             console.log("Patient Record: " + req.query.patient_id);
             patientData = new PatientWithID(req.query.patient_id);
             await patientData.initializeData();
-            await addAudit(req.user.username, "Accessed", patientData.patient_id, null, (req.user.fname + " " + req.user.lname + ": accessed patient record" + req.query.patient_id))
+            await addAudit(req.user.username, "Accessed", patientData.patient_id, null, (req.user.fname + " " + req.user.lname + ": accessed patient record " + req.query.patient_id))
             //await patientData.getById();
         }   
         res.render('records/patient-record.ejs', { patient: patientData, title: 'Patient Record'})
@@ -390,6 +390,17 @@ app.get('/register', async (req, res) => {
     }
 })
 
+app.get('/reset', async (req, res) => {
+    if (req.isAuthenticated()) {
+        const user = req.user;
+        if (user.role === "admin") {
+            res.render('forms/resetPassword.ejs')
+        }
+    } else {
+        res.redirect('/')
+    }
+})
+
 app.get('/changePassword', async (req, res) => {
     if (req.isAuthenticated()) {
         const user = req.user;
@@ -448,9 +459,23 @@ app.post('/register', async (req, response) => {
         }
       })
       .catch((err) => console.error('Error executing query', err.stack));
-    
+})
 
-   
+app.post('/reset', async (req, response) => {
+    const text = `
+    UPDATE public."Users"
+    SET password = $2
+    WHERE username = $1
+    `
+    const password = await bcrypt.hash(req.body.pass, 10)
+    const values = [req.body.username, password];
+    await pool
+      .query(text, values)
+      .then(async (res) => {
+        await addAudit(req.user.username, "Changed ", null, null, (req.user.fname + " " + req.user.lname + ": changed " + req.body.username + " password"))
+        response.redirect('/user')
+      })
+      .catch((err) => console.error('Error executing query', err.stack));
 })
 
 
