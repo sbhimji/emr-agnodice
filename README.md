@@ -16,5 +16,7 @@ In the app/ directory, create a .env file with the following fields:
     APP_SECRET =
 
 npm install
+
 cd app
+
 node server
