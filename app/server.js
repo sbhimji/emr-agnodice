@@ -19,11 +19,9 @@ const addAudit = require('../libs/misc-func/addAudit');
 require('dotenv').config();
 
 const expressSession = require('express-session');
-//app.use(expressSession({secret: 'mySecretKey'}));
 app.use(expressSession({secret: process.env.EXPRESS_SECRET}));
 app.use(passport.initialize());
 app.use(passport.session());
-//app.use(session({secret: 'keyboard cat'}))
 app.use(session({secret: process.env.APP_SECRET}))
 
 app.use(bodyParser.urlencoded({ extended: false }))
