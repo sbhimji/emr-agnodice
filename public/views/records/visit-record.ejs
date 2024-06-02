@@ -1,0 +1,268 @@
+<head>
+    <title> <%= title %></title>
+    <link rel = "stylesheet" type = "text/css" href = "../../style/visit-record.css" />
+</head>
+<body style = "background-color:rgb(242, 246, 216)">
+    <div>
+    <h2 class = "link"><a href = "/home">Home</a></h2> 
+    <div class = "topright">
+        <h3><a href = "/">Logout</a></h3>
+        <h3><a href = "/user">User</a></h3>
+    </div>
+    <h1><a href = "/patient-record?patient_id=<%= patient.patient_id %>" class = "label">Patient: <%= patient.fName %> <%= patient.lName %></a></h1>
+    </div>
+    
+
+    <label for "div1" class = "infoLabel">Visit Info</label>
+    <div class ="genInfo" id = "div1">
+        <div>
+            <span>Visit Date:               <%= visit.date %></span>
+            <span>Event Name:               <%= visit.event %></span>
+            <span>Attending Physician:      <%= visit.physician %></span>
+        </div>
+    </div>
+
+
+    <label for "divx" class = "infoLabel"><a href = "/newHPI?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">HPI</a></label>
+    <div class ="genInfo2" id = "divx">
+        <div>
+            <span><%= visit.hpi %></span>
+        </div>
+    </div>
+
+    <label for "div1" class = "infoLabel"><a href = "/medHist?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Medical History</a></label>
+    <div class ="genInfo2" id = "div1">
+        <div>
+            <span>Prior Hospitalizations: <%= patient.hospitalizations %></span>
+        </div>
+        <div>
+            <table class="center" id="medHist" name="medHist" style = "width:77%">
+                <tr>
+                  <th>Condition</th>
+                  <th>Year Occurred</th>
+                  <th>Medications</th>
+                  <th>Dose and Frequency</th>
+                </tr>
+                <% patient.medicalHist.forEach(function(hist) { %>
+                  <tr>
+                    <td><%= hist[0] %></td>
+                    <td><%= hist[1] %></td>
+                    <td><%= hist[2] %></td>
+                    <td><%= hist[3] %></td>
+                  </tr>
+                <% }) %>
+            </table>
+        </div>
+    </div>
+
+    <label for "divz" class = "infoLabel"><a href = "/newSocial?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Social History</a></label>
+    <div class ="genInfo2" id = "divz">
+        <% if (visit.soc_added === null || visit.soc_added === "false") {%>
+        <div>
+            <span>Occupation: <%= patient.occupation %></span>
+            <span>Diet: <%= patient.diet %></span>
+            <span>Exercise: <%= patient.exercise %></span>
+            <span>Current Housing: <%= patient.curr_hous %></span>
+            <span>Housing in past 3 yrs: <%= patient.yr3_hous %></span>
+            <span>Caffeine Use: <%= patient.caffeine %></span>
+            <span>Alcohol Use: <%= patient.alc %></span>
+            <span>Tobacco Use: <%= patient.pack_yrs %> pack-yrs</span>
+            <span>  Desire to Quit: <%= patient.quit %></span>
+            <span>Marijuana Use: <%= patient.marijuana %></span>
+            <span>Hallucinogens: <%= patient.fun_drugs %></span>
+            <span>Pets: <%= patient.pets %></span>
+            <span>Sexually Active: <%= visit.sex_act %></span>
+            <span>  # of partners in last yr: <%= patient.partners %></span>
+            <span>  Protection Use: <%= patient.protection %></span>
+            <span>  STI: <%= patient.sti %></span>
+        </div>
+        <% } else { %>
+            <div>
+                <span>Occupation: <%= visit.occupation %></span>
+                <span>Diet: <%= visit.diet %></span>
+                <span>Exercise: <%= visit.exercise %></span>
+                <span>Current Housing: <%= visit.curr_hous %></span>
+                <span>Housing in past 3 yrs: <%= visit.yr3_hous %></span>
+                <span>Caffeine Use: <%= visit.caffeine %></span>
+                <span>Alcohol Use: <%= visit.alc %></span>
+                <span>Tobacco Use: <%= visit.pack_yrs %> pack-yrs</span>
+                <span>  Desire to Quit: <%= visit.quit %></span>
+                <span>Marijuana Use: <%= visit.marijuana %></span>
+                <span>Hallucinogens: <%= visit.fun_drugs %></span>
+                <span>Pets: <%= visit.pets %></span>
+                <span>Sexually Active: <%= visit.sex_act %></span>
+                <span>  # of partners in last yr: <%= visit.partners %></span>
+                <span>  Protection Use: <%= visit.protection %></span>
+                <span>  STI: <%= visit.sti %></span>
+            </div>
+        <% } %>
+    </div>
+
+    <label for "divr" class = "infoLabel"><a href = "/newFamily?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Family History</a></label>
+    <div class ="genInfo2" id = "divr">
+        <% if (visit.fam_added === null || visit.fam_added === "false") {%>
+        <div>
+            <span>Mother: <%= patient.mother %></span>
+            <span>Father: <%= patient.father %></span>
+            <span>Siblings: <%= patient.siblings %></span>
+            <span>Children: <%= patient.children %></span>
+            <span>Significant Other: <%= patient.sig_other %></span>
+        </div>
+        <% } else { %>
+            <div>
+                <span>Mother: <%= visit.mother %></span>
+                <span>Father: <%= visit.father %></span>
+                <span>Siblings: <%= visit.siblings %></span>
+                <span>Children: <%= visit.children %></span>
+                <span>Significant Other: <%= visit.sig_other %></span>
+            </div>
+        <% } %>
+    </div>
+
+    <label for "div2" class = "infoLabel"><a href = "/newVitals?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Vitals</a></label>
+    <div class ="genInfo" id = "div2">
+        <div>
+            <span>Height (ft): <%= visit.ht %></span>
+            <span>Weight (lbs): <%= visit.wt %></span>
+            <span>Last Meal (hrs): <%= visit.hrs_meal %></span>
+        </div>
+        <div>
+            <span class = "leftText">Pulse (bpm): <%= visit.pulse %></span>
+            <span class = "leftText">Blood Pressure (mmHg): <%= visit.bp %></span>
+            <span class = "leftText">Temperature (°F): <%= visit.temp %> </span>
+        </div>
+        <div>
+            <span class = "leftText">Respiratory Rate (breaths/min): <%= visit.resp_rate %></span>
+            <span class = "leftText">Blood Glucose (mg/dL): <%= visit.blood_sug %></span>
+        </div>
+    </div>
+
+    <label for "div3" class = "infoLabel"><a href = "/newROS?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Review of Systems</a></label>
+    <div class ="genInfo2" id = "div3">
+        <div>
+            <span>General: <%= visit.ros_general %></span>
+            <span>Cardio: <%= visit.ros_cardio %></span>
+            <span>Resp: <%= visit.ros_resp %></span>
+        </div>
+        <div>
+            <span>Skin: <%= visit.ros_skin %></span>
+            <span>HEENT: <%= visit.ros_heent %></span>
+            <span>GI: <%= visit.ros_gi %></span>
+        </div>
+        <div>
+            <span>GU: <%= visit.ros_gu %></span>
+            <span>Mus/Sk: <%= visit.ros_mus %></span>
+            <span>Endo: <%= visit.ros_endo %></span>
+        </div>
+    </div>
+
+    <label for "div3" class = "infoLabel"><a href = "/urine?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Urine Test</a></label>
+    <div class ="genInfo2" id = "div3">
+        <div>
+            <span>Leukocytes: <%= visit.leuko %></span>
+            <span>Nitrite: <%= visit.nitrite %></span>
+            <span>Urobilinogen: <%= visit.uro %></span>
+        </div>
+        <div>
+            <span>Protein: <%= visit.protein %></span>
+            <span>pH: <%= visit.ph %></span>
+            <span>Blood: <%= visit.blood %></span>
+        </div>
+        <div>
+            <span>Specific Gravity: <%= visit.spec %></span>
+            <span>Ketone: <%= visit.ketone %></span>
+            <span>Bilirubine: <%= visit.bili %></span>
+            <span>Glucose: <%= visit.glucose %></span>
+        </div>
+    </div>
+
+
+    <label for "div4" class = "infoLabel"><a href = "/newPhys?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Physical Exam</a>
+    <div class ="genInfo2" id = "div4">
+        <div>
+            <label for "1">General Survey</label>
+            <% if(visit.phys_gen_norm !== null && visit.phys_gen_norm.includes("Within")) { %>
+                <span>Within Normal Limits</span>
+            <% } %>
+            <div id = "1" class = "norm_ab">
+                <span>Normal Findings: <%= visit.phys_gen_norm %></span>
+                <span>Abnormal Findings: <%= visit.phys_gen_ab %></span>
+            </div>
+            <label for "2">Heart</label>
+            <div id = "2" class = "norm_ab">
+                <span>Normal Findings: <%= visit.phys_heart_norm %></span>
+                <span>Abnormal Findings: <%= visit.phys_heart_ab %></span>
+            </div>
+            <label for "3">Lungs</label>
+            <div id = "3" class = "norm_ab">
+                <span>Normal Findings: <%= visit.phys_lungs_norm %></span>
+                <span>Abnormal Findings: <%= visit.phys_lungs_ab %></span>
+            </div>
+            <label for "4">Skin</label>
+            <div id = "4" class = "norm_ab">
+                <span>Normal Findings: <%= visit.phys_skin_norm %></span>
+                <span>Abnormal Findings: <%= visit.phys_skin_ab %></span>
+            </div>
+            <label for "5">HEENT</label>
+            <div id = "5" class = "norm_ab">
+                <span>Normal Findings: <%= visit.phys_heent_norm %></span>
+                <span>Abnormal Findings: <%= visit.phys_heent_ab %></span>
+            </div>
+        </div>
+        <label for "6">Abdo</label>
+        <div id = "6" class = "norm_ab">
+            <span>Normal Findings: <%= visit.phys_abdo_norm %></span>
+            <span>Abnormal Findings: <%= visit.phys_abdo_ab %></span>
+        </div>
+        <label for "7">Mus/Skel</label>
+        <div id = "7" class = "norm_ab">
+            <span>Normal Findings: <%= visit.phys_mus_norm %></span>
+            <span>Abnormal Findings: <%= visit.phys_mus_ab %></span>
+        </div>
+        <label for "8">Neuro</label>
+        <div id = "8" class = "norm_ab">
+            <span>Normal Findings: <%= visit.phys_neuro_norm %></span>
+            <span>Abnormal Findings: <%= visit.phys_neuro_ab %></span>
+        </div>
+        <label for "9">OMM</label>
+        <div id = "9" class = "norm_ab">
+            <span>Normal Findings: <%= visit.phys_omm_norm %></span>
+            <span>Abnormal Findings: <%= visit.phys_omm_ab %></span>
+        </div>
+        <label for "10">Other</label>
+        <div id = "10" class = "norm_ab">
+            <span>Normal Findings: <%= visit.phys_other_norm %></span>
+            <span>Abnormal Findings: <%= visit.phys_other_ab %></span>
+        </div>
+        </div>
+    </div>
+
+    <label for "div5" class = "infoLabel"><a href = "/newMDM?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">MDM</a></label>
+    <div class ="genInfo2" id = "div5">
+        <div>
+            <span>Physician Name: <%= visit.phys_name %></span>
+            <span>Plan of Care: <%= visit.phys_thoughts %></span>
+            <span>Refferals: <%= visit.reff %></span>
+            <span>Patient Agrees to Plan:  <%= visit.patient_agreement %></span>
+            <span>Medications Prescribed:  <%= visit.med_presc %></span>
+            <span>Assessment:</span>
+        </div>
+
+    </div>
+
+    <label for "div5" class = "infoLabel"><a href = "/newAssessment?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Assessments</a></label>
+    <div class ="genInfo2" id = "div5">
+        <table class = "center" id = "queryTable" name = "assessment" style = "width:77%">
+            <tr>
+              <th>Health Issue</th>
+              <th>Diff</th>
+            </tr>
+            <% visit.assessments.forEach(function(assessment) { %>
+                <tr>
+                  <td><%= assessment[0] %></td>
+                  <td><%= assessment[1] %></td>
+                  </tr>
+              <% }) %> 
+        </table>
+    </div>
+</body>

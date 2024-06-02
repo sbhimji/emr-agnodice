@@ -1,0 +1,103 @@
+@font-face { font-family: Login; src: url('font.ttf'); } 
+body {
+    font-family: Login, sans-serif;
+    /* font-family: Arial, sans-serif; */
+    margin: 0;
+    padding: 20px;
+}
+
+h2.link {
+    margin-bottom: 20px;
+}
+
+.label {
+    margin-left: 166px;
+    margin-top:30px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.genInfo {
+    font-family: Login, sans-serif;
+    width: 75%;
+    /* background-color: rgb(144,238,144); */
+    border: 2px solid black;
+    padding: 7px;
+    margin-top: 5px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.topright {
+    position: absolute;
+    top: 2px;
+    right: 16px;
+    font-size: 18px;
+  }
+
+.genInfo2 {
+    font-family: Login, sans-serif;
+    width: 75%;
+    /* background-color: rgb(144,238,144); */
+    border: 2px solid black;
+    padding: 7px;
+    margin-top: 5px;
+    margin-bottom: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.genInfo2 span {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.genInfo span {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.norm_ab {
+    margin-left: 50px;
+}
+
+.leftText {
+    margin-left: 100px;
+}
+
+.infoLabel {
+    margin-left: 166px;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+table{
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+tr, td {
+  height: 20px;
+  border-bottom: 1px solid black;
+  text-align: center;
+  /* background-color: rgb(255, 213, 128) */
+}
+
+th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    background-color: rgb(144,238,144);
+}
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}

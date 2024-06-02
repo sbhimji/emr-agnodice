@@ -1,0 +1,46 @@
+<head>
+    <link rel = "stylesheet" type = "text/css" href =  "../../style/form.css" />
+</head>
+
+<h2 class = "link"><a href = "/home">Home</a></h2> 
+<h2 class = "link"><a href = "/visit-record?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Back to visit</a></h2>
+<div class = "topright">
+    <h3><a href = "/">Logout</a></h3>
+    <h3><a href = "/user">User</a></h3>
+</div>
+<h1>Add Vitals</h1> 
+<form action ="/vitals?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
+    <div>
+        <label for = "pulse">Pulse (bpm)</label>
+        <input type="number" id = "pulse" name = "pulse" min = "0" max = "500" value = "<%= visit.pulse %>" required>
+    </div>
+    <div>
+        <label for = "bp">Blood Pressure (mmHg)</label>
+        <input type="text" id="bp" name="bp" value="<%= visit.bp %>" required title="Please enter in valid Blood Pressure format: (num1/num2)" pattern="\d{2,3}\/\d{2,3}">
+    </div>
+    <div>
+        <label for = "temp">Temperature (°F)</label>
+        <input type="number" id = "temp" name = "temp" min = "0" max = "150" value = "<%= visit.temp %> " step = "any" required>
+    </div>
+    <div>
+        <label for = "r_rate">Respiratory Rate (breaths/min): </label>
+        <input type="number" id = "r_rate" name = "r_rate" min = "0" max = "80" value = "<%= visit.resp_rate %>" required>
+    </div>
+    <div>
+        <label for = "height">Height (ft):</label>
+        <input type="text" id = "height" name = "height" value = "<%= visit.ht %>" required>
+    </div>
+    <div>
+        <label for = "weight">Weight (lbs):</label>
+        <input type="number" id="weight" name="weight" min = "0" max = "2000" value="<%= visit.wt %>" step="any" required>
+    </div>
+    <div>
+        <label for = "blood_sug">Blood Glucose (mg/dL)</label>
+        <input type="number" step = "any" id = "blood_sug" min = "0" max = "500" name = "blood_sug" value = "<%= visit.blood_sug %>" >
+    </div>
+    <div>
+        <label for = "hrs_meal">Hrs Since Last Meal</label>
+        <input type="number" id = "hrs_meal" name = "hrs_meal" min = "0" max = "100000" value = "<%= visit.hrs_meal %>" >
+    </div>
+    <button type = "submit">Add Vitals</button>
+</form>

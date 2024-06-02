@@ -1,0 +1,347 @@
+<head>
+    <link rel = "stylesheet" type = "text/css" href =  "../../style/form.css" />
+</head>
+<h2 class = "link"><a href = "/home">Home</a></h2> 
+<div class = "topright">
+    <h3><a href = "/">Logout</a></h3>
+    <h3><a href = "/user">User</a></h3>
+</div>
+<h2 class = "link"><a href = "/visit-record?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Back to visit</a></h2>
+<h1>Add Review of Systems</h1> 
+<form action ="/newROS?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
+    <label for = "general">General</label>
+    <div id = "general">
+        <% if(visit.ros_general === null || !(visit.ros_general.includes("Unintentional Weight Loss"))) { %>
+            
+            <input type="checkbox" id = "weight_loss" name = "weight_loss" value = "Unintentional Weight Loss">
+            <label for="weight_loss">Unintentional Weight Loss</label>
+        <% } else { %>
+            
+            <input type="checkbox" id = "weight_loss" name = "weight_loss" value = "Unintentional Weight Loss" checked = "checked">
+            <label for="weight_loss">Unintentional Weight Loss</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_general === null || !(visit.ros_general.includes("Fatigue"))) { %>
+            <input type="checkbox" id = "fatigue" name = "fatigue"  value = "Fatigue">
+            <label for="fatigue">Fatigue</label>
+        <% } else { %>
+            <input type="checkbox" id = "fatigue" name = "fatigue"  value = "Fatigue" checked = "checked">
+            <label for="fatigue">Fatigue</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_general === null || !(visit.ros_general.includes("Night"))) { %>
+            <input type="checkbox" id = "sweats" name = "sweats"  value = "Night Sweats">
+            <label for="sweats">Night Sweats</label>
+        <% } else { %>
+            <input type="checkbox" id = "sweats" name = "sweats"  value = "Night Sweats" checked = "checked">
+            <label for="sweats">Night Sweats</label>
+        <% } %>
+        <% if(visit.ros_general === null || !(visit.ros_general.includes("Changes in Sleep"))) { %>
+            <input type="checkbox" id = "sleep" name = "sleep"  value = "Changes in Sleep">
+            <label for="sleep">Changes in sleep</label>
+        <% } else { %>
+            <input type="checkbox" id = "sleep" name = "sleep"  value = "sleep" checked = "checked">
+            <label for="sleep">Changes in sleep</label>
+        <% } %>
+    </div>
+    <label for = "cardio">Cardio</label>
+    <div id = "cardio">
+        <% if(visit.ros_cardio !== null && visit.ros_cardio.includes("Chest Pain")) { %>
+            
+            <input type="checkbox" id = "chestPain" name = "chestPain" value = "Chest Pain" checked = "checked">
+            <label for="chestPain">Chest Pain</label>
+        <% } else { %>
+            <input type="checkbox" id = "chestPain" name = "chestPain" value = "Chest Pain">
+            <label for="chestPain">Chest Pain</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_cardio !== null && visit.ros_cardio.includes("Palpitations")) { %>
+            <input type="checkbox" id = "palp" name = "palp" value = "Palpitations" checked = "checked">
+            <label for="palp">Palpitations</label>
+        <% } else { %>
+            <input type="checkbox" id = "palp" name = "palp" value = "Palpitations">
+            <label for="palp">Palpitations</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_cardio !== null && visit.ros_cardio.includes("Night Sweats")) { %>
+            <input type="checkbox" id = "sweats" name = "sweats"  value = "Night Sweats" checked = "checked">
+            <label for="sweats">Night Sweats</label>
+        <% } else { %>
+            <input type="checkbox" id = "sweats" name = "sweats"  value = "Night Sweats">
+            <label for="sweats">Night Sweats</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_cardio !== null && visit.ros_cardio.includes("SOB")) { %>
+            <input type="checkbox" id = "sob" name = "sob" value = "SOB on exertion" checked = "checked">
+            <label for="sob">SOB on exertion</label>
+        <% } else { %>
+            <input type="checkbox" id = "sob" name = "sob" value = "SOB on exertion">
+            <label for="sob">SOB on exertion</label>
+        <% } %>
+        
+    </div>
+    <label for = "resp">Respiratory</label>
+    <div id = "resp">
+        <% if(visit.ros_resp !== null && visit.ros_resp.includes("Coughing")) { %>
+            <input type="checkbox" id = "coughing" name = "coughing" value = "Coughing"checked = "checked">
+            <label for="coughing">Coughing</label>
+        <% } else { %>
+            <input type="checkbox" id = "coughing" name = "coughing" value = "Coughing">
+            <label for="coughing">Coughing</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_resp !== null && visit.ros_resp.includes("Wheezing")) { %>
+            <input type="checkbox" id = "wheez" name = "wheez" value = "Wheezing" checked = "checked">
+            <label for="wheez">Wheezing</label>
+        <% } else { %>
+            <input type="checkbox" id = "wheez" name = "wheez" value = "Wheezing">      
+            <label for="wheez">Wheezing</label> 
+        <% } %>
+        <br>
+        <% if(visit.ros_resp !== null && visit.ros_resp.includes("Dyspnea")) { %>
+            <input type="checkbox" id = "diff" name = "diff" value = "Dyspnea (difficulty breathing)" checked = "checked">
+            <label for="diff">Dyspnea (difficulty breathing)</label>
+        <% } else { %>
+            <input type="checkbox" id = "diff" name = "diff" value = "Dyspnea (difficulty breathing)">
+            <label for="diff">Dyspnea (difficulty breathing)</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_resp !== null && visit.ros_resp.includes("Phlegm")) { %>
+            <input type="checkbox" id = "phlegm" name = "phlegm" value = "Phlegm" checked = "checked">
+            <label for="phlegm">Phlegm</label>
+        <% } else { %>
+            <input type="checkbox" id = "phlegm" name = "phlegm" value = "Phlegm">
+            <label for="phlegm">Phlegm</label>
+        <% } %>
+    </div>
+    <label for = "skin">Skin</label>
+    <div id = "skin">
+        <% if(visit.ros_skin !== null && visit.ros_skin.includes("Rashes")) { %>
+            <input type="checkbox" id = "rashes" name = "rashes" value = "Rashes" checked = "checked">
+            <label for="rashes">Rashes</label>
+        <% } else { %>
+            <input type="checkbox" id = "rashes" name = "rashes" value = "Rashes">
+            <label for="rashes">Rashes</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_skin !== null && visit.ros_skin.includes("Bruising")) { %>
+            <input type="checkbox" id = "bruis" name = "bruis" value = "Bruising" checked = "checked">
+            <label for="bruis">Bruising</label>
+        <% } else { %>
+            <input type="checkbox" id = "bruis" name = "bruis" value = "Bruising">
+            <label for="bruis">Bruising</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_skin !== null && visit.ros_skin.includes("Changes")) { %>
+            <input type="checkbox" id = "moles" name = "moles" value = "Changes in any moles" checked = "checked">
+            <label for="moles">Changes in any moles</label>
+        <% } else { %>
+            <input type="checkbox" id = "moles" name = "moles" value = "Changes in any moles">
+            <label for="moles">Changes in any moles</label>
+        <% } %>
+    </div>
+
+    <label for = "heent">HEENT</label>
+    <div id = "heent">
+        <% if(visit.ros_heent !== null && visit.ros_heent.includes("Headaches")) { %>
+            <input type="checkbox" id = "headaches" name = "headaches" value = "Headaches" checked = "checked">
+            <label for="headaches">Headaches</label>
+        <% } else { %>
+            <input type="checkbox" id = "headaches" name = "headaches" value = "Headaches">
+            <label for="headaches">Headaches</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_heent !== null && visit.ros_heent.includes("Vision Changes")) { %>
+            <input type="checkbox" id = "vis" name = "vis" value = "Vision changes" checked = "checked">
+            <label for="vis">Vision Changes</label>
+        <% } else { %>
+            <input type="checkbox" id = "vis" name = "vis" value = "Vision changes">
+            <label for="vis">Vision Changes</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_heent !== null && visit.ros_heent.includes("Sinus")) { %>
+            <input type="checkbox" id = "sinus" name = "sinus" value = "Sinus problems" checked = "checked">
+            <label for="sinus">Sinus problems</label>
+        <% } else { %>
+            <input type="checkbox" id = "sinus" name = "sinus" value = "Sinus problems">
+            <label for="sinus">Sinus problems</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_heent !== null && visit.ros_heent.includes("Sore throat")) { %>
+            <input type="checkbox" id = "sore" name = "sore" value = "Sore throat" checked = "checked">
+            <label for="sore">Sore throat</label>
+        <% } else { %>
+            <input type="checkbox" id = "sore" name = "sore" value = "Sore throat">
+            <label for="sore">Sore throat</label>
+        <% } %>
+    </div>
+
+    <label for = "gi">GI</label>
+    <div id = "gi">
+        <% if(visit.ros_gi !== null && visit.ros_gi.includes("Nausea")) { %>
+            <input type="checkbox" id = "nausea" name = "nausea" value = "Nausea" checked = "checked">
+            <label for="nausea">Nausea</label>
+        <% } else { %>
+            <input type="checkbox" id = "nausea" name = "nausea" value = "Nausea">
+            <label for="nausea">Nausea</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_gi !== null && visit.ros_gi.includes("Diarrhea")) { %>
+            <input type="checkbox" id = "diar" name = "diar" value = "Diarrhea" checked = "checked">
+            <label for="diar">Diarrhea</label>
+        <% } else { %>
+            <input type="checkbox" id = "diar" name = "diar" value = "Diarrhea">
+            <label for="diar">Diarrhea</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_gi !== null && visit.ros_gi.includes("Constipation")) { %>
+            <input type="checkbox" id = "const" name = "const" value = "Constipation" checked = "checked">
+            <label for="const">Constipation</label>
+        <% } else { %>
+            <input type="checkbox" id = "const" name = "const" value = "Constipation">
+            <label for="const">Constipation</label>
+        <% } %>
+       <br>
+        <% if(visit.ros_gi !== null && visit.ros_gi.includes("Change")) { %>
+            <input type="checkbox" id = "bm_change" name = "bm_change" value = "Change in BM" checked = "checked">
+            <label for="bm_change">Change in BM</label>
+        <% } else { %>
+            <input type="checkbox" id = "bm_change" name = "bm_change" value = "Change in BM">
+            <label for="bm_change">Change in BM</label>
+        <% } %>
+    </div>
+
+    <label for = "gu">GU</label>
+    <div id = "gu">
+        <% if(patient.sex.localeCompare('Male') === 0) { %>
+        <% if(visit.ros_gu !== null && visit.ros_gu.includes("Penile")) { %>
+            <input type="checkbox" id = "penile" name = "penile" value = "Penile Discharge" checked = "checked">
+            <label for="penile">Penile Discharge</label>
+        } else { %>
+            <input type="checkbox" id = "penile" name = "penile" value = "Penile Discharge">
+            <label for="penile">Penile Discharge</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_gu !== null && visit.ros_gu.includes("Dysuria")) { %>
+            <input type="checkbox" id = "dysuria" name = "dysuria" value = "Dysuria" checked = "checked">
+            <label for="dysuria">Dysuria</label>
+        <% } else { %>
+            <input type="checkbox" id = "dysuria" name = "dysuria" value = "Dysuria">
+            <label for="dysuria">Dysuria</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_gu !== null && visit.ros_gu.includes("Scrotal")) { %>
+            <input type="checkbox" id = "test" name = "tes" value = "Scrotal or testicular pain" checked = "checked">
+            <label for="test">Scrotal or testicular pain</label>
+        <% } else { %>
+            <input type="checkbox" id = "test" name = "tes" value = "Scrotal or testicular pain">
+            <label for="test">Scrotal or testicular pain</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_gu !== null && visit.ros_gu.includes("Hernias")) { %>
+            <input type="checkbox" id = "hernias" name = "hernias" value = "Hernias" checked = "checked">
+            <label for="hernias">Hernias</label>
+        <% } else { %>
+            <input type="checkbox" id = "hernias" name = "hernias" value = "Hernias">
+            <label for="hernias">Hernias</label>
+        <% } %>
+        
+    <% } else{ %>
+        <% if(visit.ros_gu !== null && visit.ros_gu.includes("Dysuria")) { %>
+            <input type="checkbox" id = "dysuria2" name = "dysuria2" value = "Dysuria" checked = "checked">
+            <label for="dysuria2">Dysuria</label>
+        <% } else { %>
+            <input type="checkbox" id = "dysuria2" name = "dysuria2" value = "Dysuria">
+            <label for="dysuria2">Dysuria</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_gu !== null && visit.ros_gu.includes("tampons")) { %>
+            <input type="checkbox" id = "tamp" name = "tamp" value = "Need tampons" checked = "checked">
+            <label for="tamp">Need tampons</label>
+        <% } else { %>
+            <input type="checkbox" id = "tamp" name = "tamp" value = "Need tampons">
+            <label for="tamp">Need tampons</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_gu !== null && visit.ros_gu.includes("breast")) { %>
+            <input type="checkbox" id = "breast" name = "breast" value = "New breast lumps" checked = "checked">
+            <label for="breast">New breast lumps</label>
+        <% } else { %>
+            <input type="checkbox" id = "breast" name = "breast" value = "New breast lumps">
+            <label for="breast">New breast lumps</label>
+        <% } %>
+        <br>
+        <% if(visit.ros_gu !== null && visit.ros_gu.includes("vaginal")) { %>
+            <input type="checkbox" id = "vag" name = "vag" value = "Vaginal discharge" checked = "checked">
+            <label for="vag">Vaginal discharge</label>
+        <% } else { %>
+            <input type="checkbox" id = "vag" name = "vag" value = "Vaginal discharge">
+            <label for="vag">Vaginal discharge</label>
+        <% } %>    
+    <% } %>
+    </div>
+    <label for = "mus">Mus/Sk</label>
+    <div id = "mus">
+        <% if(visit.ros_mus !== null && visit.ros_mus.includes("Joint")) { %>
+            <input type="checkbox" id = "stiff" name = "stiff" value = "Joint pain or stiffness" checked = "checked">
+            <label for="stiff">Joint pain or stiffness</label>
+        <% } else { %>
+            <input type="checkbox" id = "stiff" name = "stiff" value = "Joint pain or stiffness">
+            <label for="stiff">Joint pain or stiffness</label>
+        <% } %>   
+        <br>
+        <% if(visit.ros_mus !== null && visit.ros_mus.includes("Muscle")) { %>
+            <input type="checkbox" id = "musc" name = "musc" value = "Muscle pain" checked = "checked">
+            <label for="musc">Muscle Pain</label>
+        <% } else { %>
+            <input type="checkbox" id = "musc" name = "musc" value = "Muscle pain">
+            <label for="musc">Muscle Pain</label>
+        <% } %>   
+        <br>
+        <% if(visit.ros_mus !== null && visit.ros_mus.includes("Muscle")) { %>
+            <input type="checkbox" id = "back" name = "back" value = "Backache" checked = "checked">
+            <label for="back">Backache</label>
+        <% } else { %>
+            <input type="checkbox" id = "back" name = "back" value = "Backache">
+            <label for="back">Backache</label>
+        <% } %>  
+    </div>
+    <label for = "endo">Endo</label>
+    <div id = "endo">
+        <% if(visit.ros_endo !== null && visit.ros_endo.includes("Heat")) { %>
+            <input type="checkbox" id = "heat" name = "heat" value = "Heat or cold intol." checked = "checked">
+            <label for="heat">Heat or cold intol.</label>
+        <% } else { %>
+            <input type="checkbox" id = "heat" name = "heat" value = "Heat or cold intol.">
+            <label for="heat">Heat or cold intol.</label>
+        <% } %>  
+        <br>
+        <% if(visit.ros_endo !== null && visit.ros_endo.includes("Hair")) { %>
+            <input type="checkbox" id = "hair" name = "hair" value = "Hair or nail changes" checked = "checked">
+            <label for="hair">Hair or nail changes</label>
+        <% } else { %>
+            <input type="checkbox" id = "hair" name = "hair" value = "Hair or nail changes">
+            <label for="hair">Hair or nail changes</label>
+        <% } %>  
+        <br>
+        <% if(visit.ros_endo !== null && visit.ros_endo.includes("Excess")) { %>
+            <input type="checkbox" id = "thirst" name = "thirst" value = "Excess thirst" checked = "checked">
+            <label for="thirst">Excess thirst</label>
+        <% } else { %>
+            <input type="checkbox" id = "thirst" name = "thirst" value = "Excess thirst">
+            <label for="thirst">Excess thirst</label>
+        <% } %>  
+        <label for="polyuria">Polyuria</label><br>
+        <% if(visit.ros_endo !== null && visit.ros_endo.includes("Polyuria")) { %>
+            <input type="checkbox" id = "polyuria" name = "polyuria" value = "Polyuria" checked = "checked">
+            <label for="polyuria">Polyuria</label>
+        <% } else { %>
+            <input type="checkbox" id = "polyuria" name = "polyuria" value = "Polyuria">
+            <label for="polyuria">Polyuria</label>
+        <% } %>  
+        
+        
+        
+    </div>
+    <button type = "submit">Add ROS</button>
+</form>

@@ -1,0 +1,54 @@
+<head>
+    <link rel = "stylesheet" type = "text/css" href =  "../../style/form.css" />
+</head>
+
+<h2 class = "link"><a href = "/home">Home</a></h2> 
+<h2 class = "link"><a href = "/visit-record?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Back to visit</a></h2>
+<div class = "topright">
+    <h3><a href = "/">Logout</a></h3>
+    <h3><a href = "/user">User</a></h3>
+</div>
+<h1>Add Vitals</h1> 
+<form action ="/urine?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
+    <div>
+        <label for = "leuko">Leukocytes: </label>
+        <input type="text" id = "leuko" name = "leuko" min = "0" max = "500" value = "<%= visit.leuko %>" required>
+    </div>
+    <div>
+        <label for = "nitrite">Nitrite: </label>
+        <input type="text" id="nitrite" name="nitrite" value="<%= visit.nitrite %>">
+    </div>
+    <div>
+        <label for = "uro">Urobilinogen: </label>
+        <input type="text" id = "uro" name = "uro" min = "0" max = "150" value = "<%= visit.uro %> " required>
+    </div>
+    <div>
+        <label for = "protein">Protein: </label>
+        <input type="text" id = "protein" name = "protein" min = "0" max = "80" value = "<%= visit.protein %>" required>
+    </div>
+    <div>
+        <label for = "ph">pH: </label>
+        <input type="text" id = "ph" name = "ph" value = "<%= visit.ph %>" required>
+    </div>
+    <div>
+        <label for = "blood">Blood</label>
+        <input type="text" id="blood" name="blood" min = "0" max = "2000" value="<%= visit.blood %>" required>
+    </div>
+    <div>
+        <label for = "spec">Specific Gravity</label>
+        <input type="text" step = "any" id = "spec" min = "0" max = "500" name = "spec" value = "<%= visit.spec %>" >
+    </div>
+    <div>
+        <label for = "ketone">Ketone</label>
+        <input type="text" id = "ketone" name = "ketone" min = "0" max = "100000" value = "<%= visit.ketone %>" >
+    </div>
+    <div>
+        <label for = "bili">Bilirubine</label>
+        <input type="text" id = "Bilirubine" name = "Bilirubine" min = "0" max = "100000" value = "<%= visit.bili %>" >
+    </div>
+    <div>
+        <label for = "glucose">Glucose</label>
+        <input type="text" id = "glucose" name = "glucose" min = "0" max = "100000" value = "<%= visit.glucose %>" >
+    </div>
+    <button type = "submit">Add Vitals</button>
+</form>

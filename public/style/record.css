@@ -1,0 +1,133 @@
+@font-face { font-family: Login; src: url('font.ttf'); } 
+body {
+    font-family: Login, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* .patient {
+    width: 75%; */
+    /* background-color: rgb(144,238,144); */
+    /* border: 2px solid black; */
+    /* padding: 7px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+} */
+
+.patient {
+    width: 75%;
+    /* background-color: rgb(144,238,144); */
+    /* border: 2px solid black; */
+    padding: 7px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.guest {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.topright {
+    position: absolute;
+    text-align: center;
+    top: 2px;
+    right: 16px;
+    font-size: 18px;
+    margin-top: -10px;
+  }
+
+/* .name {
+    position: absolute;
+    bottom: 10;
+    margin-left: 13%;
+    font-family: Login, sans-serif;
+} */
+
+.name {
+    position: absolute;
+    bottom: 0px;
+    left: 14.5%;
+    font-family: Login, sans-serif;
+    width: 100%;
+}
+
+.topleft {
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    font-size: 18px;
+    font-family: Login, sans-serif;
+  }
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.genInfo {
+    font-family: Login, sans-serif;
+    width: 75%;
+    /* background-color: rgb(144,238,144); */
+    border: 2px solid black;
+    padding: 7px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.genInfo span {
+    display: block;
+    margin-left: 8%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.leftText {
+    margin-left: 75px;
+}
+
+.infoLabel {
+    margin-left: 161px;
+    font-weight: bold;
+    margin-top: 40px;
+}
+
+.label {
+    font-weight: bold;
+}
+
+table{
+    font-family: Login, sans-serif;
+    border: 1px solid black;
+    border-collapse: collapse;
+    /*background-color: rgb(144,238,144); */
+  }
+tr, td {
+  height: 20px;
+  border-bottom: 1px solid black;
+  background-color: rgb(255, 213, 128);
+  text-align: center;
+}
+
+th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    background-color: rgb(144,238,144);
+}
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
