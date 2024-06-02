@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: montserrat;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.image {
+  display: block;
+    /* align-items: center; */
+  margin-left: auto;
+  margin-right: auto;
+  /* margin-left: 300px;
+  margin-right: 200px;
+  margin-bottom: 250px;
+  margin-top: 200px; */
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    width: 400px;
+    border: 2px solid rgb(35, 26, 90);
+    border-radius: 10px;
+  }
+
+.center span {
+  color: rgba(255, 0, 34, 0.753);
+  margin-left: auto;
+  margin-right: auto;
+}
+@font-face { font-family: Login; src: url('font.ttf'); } 
+  .center h2 {
+    text-align: center;
+    font-family: Login, sans-serif;
+    padding: 0 0 20px 0;
+    color: rgb(35, 26, 90);
+    border-bottom: 2px solid rgb(35, 26, 90);
+  }
+
+  .center form {
+    padding: 0 40px;
+    box-sizing: border-box;
+  }
+
+  form .text-field {
+    margin-bottom: 5px;
+    position: relative;
+   /* border: 2px solid rgb(215, 46, 46); */
+    border: 2px solid rgb(35, 26, 90);
+  }
+
+  .text-field input {
+    width: 75%;
+    padding: 0 20px;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    outline: none;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .submitbutton {
+    text-align: center;
+    margin-left: 40%;
+    margin-right: 40%;
+    width: 20%;
+  }

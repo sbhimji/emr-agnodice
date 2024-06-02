@@ -1,0 +1,37 @@
+<head>
+    <link rel = "stylesheet" type = "text/css" href =  "../../style/form.css" />
+</head>
+
+<h2 class = "link"><a href = "/home">Home</a></h2> 
+<div class = "topright">
+    <h3><a href = "/">Logout</a></h3>
+    <h3><a href = "/user">User</a></h3>
+</div>
+<h1>Add Visit</h1> 
+<form action ="/visit?patient_id=<%= patient.patient_id %>" method = 'POST'>
+    <div>
+        <label for "visitDate">Visit Date</label>
+        <input type="date" id="visitDate" name="visitDate"  min="1907-01-01" max="<%= (new Date()).toISOString().split('T')[0] %>" required>
+    </div>
+    <div>
+        <label for = "event">Event Name</label>
+        <input type="text" id = "event" name = "eventName" maxlength = "25" required>
+    </div>
+    <div>
+        <label for = "phys">Attending Physician</label>
+        <input type="text" id = "phys" name = "phys" maxlength = "25" required>
+    </div>
+    <div>
+        <span><a href="File_0317.pdf" target="_blank">Consent Form</a></span>
+        <label for = "quit">Patient agrees to consent form?</label>
+            <select id = "quit" name = "quit"  type = "text" >
+                <option>No</option>
+                <option>Yes</option>
+            </select>
+    </div>
+    
+    <div>
+        <button type = "submit">Add Visit</button>
+    </div>
+
+</form>

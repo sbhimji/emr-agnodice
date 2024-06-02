@@ -1,0 +1,12 @@
+@font-face { font-family: Login; src: url('font.ttf'); } 
+body {
+    font-family: Login, sans-serif;
+  }
+  .topright {
+    position: absolute;
+    text-align: center;
+    top: 2px;
+    right: 16px;
+    font-size: 18px;
+    margin-top: -10px;
+  }

@@ -1,0 +1,20 @@
+<head>
+    <link rel = "stylesheet" type = "text/css" href =  "../../style/form.css" />
+</head>
+<body>
+    <h2 class = "link"><a href = "/home">Home</a></h2>
+    <div class = "topright">
+        <h3><a href = "/">Logout</a></h3>
+        <h3><a href = "/user">User</a></h3>
+    </div>
+    <h2 class = "link"><a href = "/visit-record?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>">Back to visit</a></h2>  
+    
+    <h1>Add HPI</h1> 
+    <form action ="/newHPI?visit_id=<%= visit.visit_id %>&patient_id=<%= patient.patient_id %>" method = 'POST'>
+        <div>
+            <label for = "hpi">HPI</label>
+            <textarea id = "hpi" name = "hpi" rows = "20" cols = "100" maxlength="2000" required><%= visit.hpi %></textarea>
+        </div>
+        <button type = "submit">Add HPI</button>
+    </form>
+</body>
